@@ -103,6 +103,9 @@ dependencies {
     // JSON serialization library, works with the Kotlin serialization plugin
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 
+    implementation("com.google.accompanist:accompanist-placeholder-material:0.31.2-alpha")
+
+
 
 
 }
