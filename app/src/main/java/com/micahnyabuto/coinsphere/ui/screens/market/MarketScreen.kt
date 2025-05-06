@@ -1,6 +1,8 @@
 package com.micahnyabuto.coinsphere.ui.screens.market
 
 
+import android.annotation.SuppressLint
+import android.util.Log.i
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,15 +17,19 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -47,6 +53,9 @@ import com.google.accompanist.placeholder.material.shimmer
 import com.micahnyabuto.coinsphere.R
 import com.micahnyabuto.coinsphere.data.remote.Coin
 
+/**
+ * The market screen.
+ */
 @Composable
 fun MarketScreen(
     modifier: Modifier=Modifier,
@@ -65,17 +74,19 @@ fun MarketScreen(
             MarketScreenContent(coins = (uiState as UiState.Success).data)
         }
         is UiState.Error -> {
-            Box(
+            Column(
                 modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
             Text("Something went wrong",
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.titleLarge.copy()
                 )
+                Spacer(Modifier.height(25.dp))
                 Button(
                     onClick = {viewModel.fetchCoins()}
                 ) {
-                    Text("Refresh again")
+                    Text("Check your internet connection")
                 }
             }
         }
@@ -84,7 +95,9 @@ fun MarketScreen(
 
 }
 
-
+/**
+ * The content of the market screen.
+ */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -106,8 +119,8 @@ fun MarketScreenContent(
                 },
                 actions = {
                     Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Search",
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = "notifications",
 
                     )
                 },
@@ -143,28 +156,42 @@ fun MarketScreenContent(
 
 
     }
+
+/**
+ * A row for the market screen.
+ */
+@SuppressLint("DefaultLocale")
 @Composable
 fun CoinsRow(
     modifier: Modifier= Modifier,
     coin: Coin
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxSize()
+            .padding(start = 8.dp),
     ) {
+
         Image(
             painter = rememberAsyncImagePainter(coin.image),
             contentDescription = coin.name,
             modifier = Modifier.size(40.dp)
         )
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(32.dp))
         Row {
             Text(
-                text = "${coin.symbol}", style = MaterialTheme.typography.bodyMedium
+                text = "${coin.symbol.uppercase()}", style = MaterialTheme.typography.bodyMedium
             )
-            Text(text = "${coin.current_price}")
+        }
+        Spacer(modifier = Modifier.width(40.dp))
 
+        Row {
+            Text(text = "$${coin.current_price}", style = MaterialTheme.typography.bodyMedium)
+          }
+            Spacer(modifier = Modifier.width(40.dp))
+        Row {
             Text(
-                text = "24h Change: ${String.format("%.2f", coin.price_change_percentage_24h)}%",
+                text = " ${String.format("%.2f", coin.price_change_percentage_24h)}%",
+                style = MaterialTheme.typography.bodyMedium,
                 color = if (coin.price_change_percentage_24h >= 0)
                     Color.Green else Color.Red
             )
@@ -173,6 +200,9 @@ fun CoinsRow(
     }
 }
 
+/**
+ *A shimmer row for the market screen.
+ */
 @Composable
 fun CoinShimmerRow() {
     Row(
