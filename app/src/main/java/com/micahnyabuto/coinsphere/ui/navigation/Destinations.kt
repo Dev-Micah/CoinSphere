@@ -10,7 +10,7 @@ sealed class Destinations {
     object Search
 
     @Serializable
-    object Discover
+    object News
 
     @Serializable
     object Favourite
