@@ -2,6 +2,8 @@ package com.micahnyabuto.coinsphere.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+
+
 val PrimaryColor = Color(0xFF64B5F7)
 val PrimaryLightColor = PrimaryColor.copy(alpha = 0.75f)
 
