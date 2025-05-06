@@ -207,8 +207,8 @@ fun CoinsRow(
 fun CoinShimmerRow() {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp),
+            .fillMaxWidth(0.9f)
+            .padding(top = 50.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -226,7 +226,7 @@ fun CoinShimmerRow() {
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.6f)
+                    .fillMaxWidth()
                     .height(16.dp)
                     .clip(RoundedCornerShape(4.dp))
                     .placeholder(
@@ -237,7 +237,7 @@ fun CoinShimmerRow() {
             Spacer(modifier = Modifier.height(8.dp))
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.4f)
+                    .fillMaxWidth()
                     .height(12.dp)
                     .clip(RoundedCornerShape(4.dp))
                     .placeholder(
