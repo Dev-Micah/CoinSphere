@@ -1,6 +1,8 @@
 package com.micahnyabuto.coinsphere.di
 
 import com.micahnyabuto.coinsphere.data.remote.CoinSphereApiService
+import com.micahnyabuto.coinsphere.data.repository.CoinSphereRepository
+import com.micahnyabuto.coinsphere.data.repository.CoinSphereRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +22,7 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
+
     }
     @Singleton
     @Provides
@@ -27,4 +30,10 @@ object NetworkModule {
         return retrofit.create(CoinSphereApiService::class.java)
 
     }
+    @Singleton
+    @Provides
+    fun provideRepository(coinSphereApiService: CoinSphereApiService): CoinSphereRepository {
+        return CoinSphereRepositoryImpl(coinSphereApiService)
+    }
+
 }
