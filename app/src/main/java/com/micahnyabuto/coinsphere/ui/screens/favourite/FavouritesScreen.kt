@@ -15,6 +15,6 @@ fun FavouritesScreen(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text("SearchScreen")
+        Text("FavouritesScreen")
     }
 }
