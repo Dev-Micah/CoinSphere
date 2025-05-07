@@ -3,6 +3,7 @@ package com.micahnyabuto.coinsphere.ui.screens.market
 
 import android.annotation.SuppressLint
 import android.util.Log.i
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,11 +39,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -50,6 +55,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.micahnyabuto.coinsphere.R
 import com.micahnyabuto.coinsphere.data.remote.Coin
 
@@ -61,7 +68,22 @@ fun MarketScreen(
     modifier: Modifier=Modifier,
     viewModel: MarketViewModel =hiltViewModel()
 ){
+    val context =LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
+
+    var wasLoading by remember { mutableStateOf(false) }
+
+    LaunchedEffect(uiState) {
+        if (wasLoading && uiState is UiState.Success) {
+            Toast.makeText(context, "Refreshed successfully", Toast.LENGTH_SHORT).show()
+        }
+        wasLoading = uiState is UiState.Loading
+        if (uiState is UiState.Error) {
+            Toast.makeText(context, "Failed to refresh data 🥲 Check internet connection and try again", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
 
     LaunchedEffect(key1 = true) {
         viewModel.fetchCoins()
@@ -79,14 +101,16 @@ fun MarketScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-            Text("Something went wrong",
+            Text("Something went wrong!",
                 style = MaterialTheme.typography.titleLarge.copy()
                 )
                 Spacer(Modifier.height(25.dp))
                 Button(
-                    onClick = {viewModel.fetchCoins()}
+                    onClick = {viewModel.fetchCoins()},
+                    modifier = Modifier.padding(8.dp),
+                    shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text("Check your internet connection")
+                    Text("Refresh again")
                 }
             }
         }
@@ -103,9 +127,13 @@ fun MarketScreen(
 @Composable
 fun MarketScreenContent(
     modifier: Modifier= Modifier,
-    coins: List<Coin>
+    coins: List<Coin>,
+    viewModel: MarketViewModel =hiltViewModel()
 ){
-
+  /*
+  * Swipe refresh state for the market screen.
+   */
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
 
     Scaffold(
         modifier = Modifier,
@@ -140,17 +168,25 @@ fun MarketScreenContent(
             )
         }
     ) { innerpadding ->
-                LazyColumn(
-                    modifier = Modifier.padding(innerpadding),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(coins) { coin ->
-                        CoinsRow(coin = coin)
-                        HorizontalDivider()
+
+        SwipeRefresh(
+            state = swipeRefreshState,
+            onRefresh = { viewModel.fetchCoins() },
+        )
+        {
+            LazyColumn(
+                modifier = Modifier.padding(innerpadding),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(coins) { coin ->
+                    CoinsRow(coin = coin)
+                    HorizontalDivider()
 
 
-                    }
                 }
+            }
+        }
+
             }
 
 
@@ -174,7 +210,8 @@ fun CoinsRow(
         Image(
             painter = rememberAsyncImagePainter(coin.image),
             contentDescription = coin.name,
-            modifier = Modifier.size(40.dp)
+            modifier = Modifier.size(35.dp),
+            contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.width(32.dp))
         Row {
@@ -208,7 +245,7 @@ fun CoinShimmerRow() {
     Row(
         modifier = Modifier
             .fillMaxWidth(0.9f)
-            .padding(top = 50.dp),
+            .padding(top = 70.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -251,7 +288,7 @@ fun CoinShimmerRow() {
 @Composable
 fun MarketShimmerList() {
     LazyColumn {
-        items(100) { // Show 100 shimmer rows
+        items(150) { // Show 100 shimmer rows
             CoinShimmerRow()
         }
     }
