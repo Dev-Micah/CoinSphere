@@ -102,6 +102,9 @@ dependencies {
 
     implementation(libs.accompanist.placeholder.material)
 
+    //SwipeToRefresh
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.34.0")
+
 
 
 
