@@ -224,7 +224,7 @@ fun CoinsRow(
         Row {
             Text(text = "$${coin.current_price}", style = MaterialTheme.typography.bodyMedium)
           }
-            Spacer(modifier = Modifier.width(40.dp))
+            Spacer(Modifier.size(40.dp))
         Row {
             Text(
                 text = " ${String.format("%.2f", coin.price_change_percentage_24h)}%",
