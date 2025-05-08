@@ -34,7 +34,9 @@ fun AppNavHost(
             SearchScreen()
         }
         composable <Destinations.Settings>{
-            SettingsScreen()
+            SettingsScreen(
+                navController =navController
+            )
         }
 
      }
