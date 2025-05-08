@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -72,6 +73,7 @@ fun SearchScreen(
                     modifier = Modifier.padding(
                         top = 90.dp,
                         start = 8.dp,
+                        end = 1.dp
                     ),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -80,7 +82,8 @@ fun SearchScreen(
                             modifier = modifier,
                             coin = coin
                         )
-                        HorizontalDivider()
+
+
                     }
                 }
             }
