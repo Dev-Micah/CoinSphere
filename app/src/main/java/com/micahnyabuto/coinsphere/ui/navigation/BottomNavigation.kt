@@ -23,12 +23,14 @@ enum class BottomNavigation(
         unselectedIcon = Icons.Default.BarChart,
         route = Destinations.Market
     ),
+
     News(
         label = "News",
         selectedIcon = Icons.Default.Article,
         unselectedIcon = Icons.Default.Article,
         route = Destinations.News
     ),
+
     Favourite(
         label ="Favourites",
         selectedIcon = Icons.Default.Star,
@@ -36,6 +38,7 @@ enum class BottomNavigation(
         route = Destinations.Favourite
 
     ),
+
     Search(
         label ="Search",
         selectedIcon = Icons.Default.Search,
