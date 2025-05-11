@@ -200,7 +200,7 @@ fun MarketScreenContent(
 @Composable
 fun CoinsRow(
     modifier: Modifier= Modifier,
-    coin: Coin
+    coin: Coin,
 ) {
     Row(
         modifier = Modifier.fillMaxSize()
