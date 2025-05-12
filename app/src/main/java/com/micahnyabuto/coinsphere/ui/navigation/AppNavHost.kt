@@ -24,10 +24,12 @@ fun AppNavHost(
     val favouritesViewModel: FavouritesViewModel = hiltViewModel()
     val marketViewModel: MarketViewModel = hiltViewModel()
 
+
     NavHost (
          modifier =modifier,
          navController = navController,
-         startDestination = Destinations.Market
+         startDestination = Destinations.Market,
+
      ){
         composable <Destinations.Market>{
             MarketScreen(
