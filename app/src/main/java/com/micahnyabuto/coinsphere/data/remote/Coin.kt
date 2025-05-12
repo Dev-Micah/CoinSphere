@@ -7,7 +7,7 @@ data class Coin(
     val image: String,
     val current_price: Double,
     val market_cap: Double,
-    val market_cap_rank: Double,
+    val market_cap_rank: Int,
     val price_change_24h: Double,
     val price_change_percentage_24h: Double,
     val high_24h:Double,
