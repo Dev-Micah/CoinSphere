@@ -23,19 +23,27 @@ class MarketViewModel@Inject constructor(
 
     private val _allCoins = MutableStateFlow<List<Coin>>(emptyList())
 
+    val allCoins: StateFlow<List<Coin>> = _allCoins.asStateFlow()
 
-    // Holds the current search query.
+
+
+    /*
+    search query
+     */
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
 
-    // Combines the coin list and search query to produce a filtered list.
     val filteredCoins: StateFlow<List<Coin>> = combine(_allCoins, _searchQuery) { coins, query ->
         if (query.isBlank()) coins
         else coins.filter { coin ->
             coin.name.contains(query, ignoreCase = true) ||
                     coin.symbol.contains(query, ignoreCase = true)
         }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        emptyList()
+    )
 
 
     fun fetchCoins(){
