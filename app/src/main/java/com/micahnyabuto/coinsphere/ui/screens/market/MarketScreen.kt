@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.util.Log.i
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,6 +52,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
@@ -59,6 +62,8 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.micahnyabuto.coinsphere.R
 import com.micahnyabuto.coinsphere.data.remote.Coin
+import com.micahnyabuto.coinsphere.ui.navigation.Destinations
+import com.micahnyabuto.coinsphere.ui.screens.favourite.FavouritesViewModel
 
 /**
  * The market screen.
@@ -66,11 +71,11 @@ import com.micahnyabuto.coinsphere.data.remote.Coin
 @Composable
 fun MarketScreen(
     modifier: Modifier=Modifier,
-    viewModel: MarketViewModel =hiltViewModel()
+    viewModel: MarketViewModel =hiltViewModel(),
+    navController : NavController
 ){
     val context =LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
-
     var wasLoading by remember { mutableStateOf(false) }
 
     LaunchedEffect(uiState) {
@@ -93,7 +98,9 @@ fun MarketScreen(
             MarketShimmerList()
         }
         is UiState.Success -> {
-            MarketScreenContent(coins = (uiState as UiState.Success).data)
+            MarketScreenContent(coins = (uiState as UiState.Success).data,
+                navController = navController,
+            )
         }
         is UiState.Error -> {
             Column(
@@ -128,11 +135,13 @@ fun MarketScreen(
 fun MarketScreenContent(
     modifier: Modifier= Modifier,
     coins: List<Coin>,
-    viewModel: MarketViewModel =hiltViewModel()
+    viewModel: MarketViewModel =hiltViewModel(),
+    navController: NavController
 ){
   /*
   * Swipe refresh state for the market screen.
    */
+
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
 
     Scaffold(
@@ -179,7 +188,10 @@ fun MarketScreenContent(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(coins) { coin ->
-                    CoinsRow(coin = coin)
+                    CoinsRow(
+                        coin = coin,
+                        navController = navController
+                    )
                     HorizontalDivider()
 
 
@@ -201,11 +213,21 @@ fun MarketScreenContent(
 fun CoinsRow(
     modifier: Modifier= Modifier,
     coin: Coin,
+    viewModel: FavouritesViewModel =hiltViewModel(),
+    navController: NavController
 ) {
+
     Row(
         modifier = Modifier.fillMaxSize()
-            .padding(start = 8.dp),
+            .padding(start = 8.dp)
+            .clickable {
+                navController.navigate(Destinations.Details)
+            },
+
     ) {
+        Text(text = "${coin.market_cap_rank}")
+
+        Spacer(modifier = Modifier.width(16.dp))
 
         Image(
             painter = rememberAsyncImagePainter(coin.image),
@@ -233,6 +255,17 @@ fun CoinsRow(
                     Color.Green else Color.Red
             )
         }
+//        Spacer(Modifier.size(40.dp))
+//        Row {
+//            IconButton(
+//                onClick = { viewModel.toggleFavourite(coinId = toString()) }
+//            ) {
+//                Icon(
+//                    imageVector = Icons.Default.Star,
+//                    contentDescription = "isFavourite"
+//                )
+//            }
+//        }
 
     }
 }
