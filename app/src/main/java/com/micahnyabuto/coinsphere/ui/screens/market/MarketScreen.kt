@@ -84,13 +84,13 @@ fun MarketScreen(
         }
         wasLoading = uiState is UiState.Loading
         if (uiState is UiState.Error) {
-            Toast.makeText(context, "Failed to refresh data 🥲 Check internet connection and try again", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Failed to get data 🥲 Check your internet connection and try again", Toast.LENGTH_SHORT).show()
         }
     }
 
 
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(Unit) {
         viewModel.fetchCoins()
     }
     when (uiState) {
@@ -255,17 +255,6 @@ fun CoinsRow(
                     Color.Green else Color.Red
             )
         }
-//        Spacer(Modifier.size(40.dp))
-//        Row {
-//            IconButton(
-//                onClick = { viewModel.toggleFavourite(coinId = toString()) }
-//            ) {
-//                Icon(
-//                    imageVector = Icons.Default.Star,
-//                    contentDescription = "isFavourite"
-//                )
-//            }
-//        }
 
     }
 }
