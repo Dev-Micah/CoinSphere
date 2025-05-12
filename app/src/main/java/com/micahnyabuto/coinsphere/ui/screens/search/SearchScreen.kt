@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.micahnyabuto.coinsphere.data.remote.Coin
 import com.micahnyabuto.coinsphere.ui.screens.market.CoinsRow
 import com.micahnyabuto.coinsphere.ui.screens.market.MarketShimmerList
@@ -36,6 +37,7 @@ import java.nio.file.WatchEvent
 
 @Composable
 fun SearchScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: MarketViewModel = hiltViewModel()
 ) {
@@ -80,7 +82,8 @@ fun SearchScreen(
                     items(filteredCoins) { coin ->
                         CoinsRow(
                             modifier = modifier,
-                            coin = coin
+                            coin = coin,
+                            navController = navController
                         )
 
 
