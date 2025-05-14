@@ -4,7 +4,16 @@ import kotlinx.serialization.Serializable
 
 sealed class Destinations {
     @Serializable
+    object Splash
+    @Serializable
     object Market
+
+    @Serializable
+    object SignUp
+
+    @Serializable
+    object SignIn
+
 
     @Serializable
     object Search
@@ -20,4 +29,7 @@ sealed class Destinations {
 
     @Serializable
     object Details
+
+
+
 }
