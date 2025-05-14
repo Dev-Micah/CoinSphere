@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "226299557117",
+    "project_id": "coinsphere-e5f4a",
+    "storage_bucket": "coinsphere-e5f4a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226299557117:android:a869c150c372d06140fa94",
+        "android_client_info": {
+          "package_name": "com.micahnyabuto.coinsphere"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgz4JKyc1RAO4qCqGUwPi9wcn01JWdgng"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
