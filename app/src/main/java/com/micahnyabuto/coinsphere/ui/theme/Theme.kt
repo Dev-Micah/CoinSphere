@@ -12,6 +12,8 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.micahnyabuto.coinsphere.ui.screens.settings.SettingsViewModel
 
 private val LightColorScheme = lightColorScheme(
     primary = PrimaryColor,
@@ -53,7 +55,8 @@ private val DarkColorScheme = darkColorScheme(
 
 @Composable
 fun CoinSphereTheme(
-    theme: Int = Theme.FOLLOW_SYSTEM.themeValue,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    //theme: Int = Theme.FOLLOW_SYSTEM.themeValue,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
@@ -72,12 +75,8 @@ fun CoinSphereTheme(
         autoColors
     }
 
-    val colorScheme = when (theme) {
-        Theme.LIGHT_THEME.themeValue -> LightColorScheme
-        Theme.DARK_THEME.themeValue -> DarkColorScheme
-        Theme.MATERIAL_YOU.themeValue -> dynamicColors
-        else -> autoColors
-    }
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+
 
     MaterialTheme(
         colorScheme = colorScheme,
