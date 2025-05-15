@@ -32,6 +32,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,6 +54,7 @@ import com.micahnyabuto.coinsphere.ui.navigation.Destinations
 import com.micahnyabuto.coinsphere.ui.screens.market.MarketScreen
 import com.micahnyabuto.coinsphere.ui.screens.market.MarketScreenContent
 import com.micahnyabuto.coinsphere.ui.screens.market.MarketViewModel
+import com.micahnyabuto.coinsphere.ui.screens.settings.SettingsViewModel
 import com.micahnyabuto.coinsphere.ui.screens.splash.SplashScreen
 import com.micahnyabuto.coinsphere.ui.theme.CoinSphereTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,13 +62,17 @@ import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
 
-            CoinSphereTheme {
+            val viewModel: SettingsViewModel = hiltViewModel()
+            val isDarkMode by viewModel.isDarkMode.collectAsState()
+
+            CoinSphereTheme (darkTheme = isDarkMode){
                 val navController =rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route ?: Destinations.Market::class.qualifiedName.orEmpty()
