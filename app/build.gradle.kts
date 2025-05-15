@@ -108,6 +108,10 @@ dependencies {
     //SwipeToRefresh
     implementation("com.google.accompanist:accompanist-swiperefresh:0.34.0")
 
+    //Datastore
+    implementation ("androidx.datastore:datastore-preferences:1.1.6")
+
+
 
 
 
