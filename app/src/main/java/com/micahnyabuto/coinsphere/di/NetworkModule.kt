@@ -21,8 +21,6 @@ object NetworkModule {
             .baseUrl("https://api.coingecko.com/api/v3/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
-
     }
     @Singleton
     @Provides
