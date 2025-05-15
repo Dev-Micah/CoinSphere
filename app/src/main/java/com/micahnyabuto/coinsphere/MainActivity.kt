@@ -31,8 +31,10 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,8 +53,10 @@ import com.micahnyabuto.coinsphere.ui.navigation.Destinations
 import com.micahnyabuto.coinsphere.ui.screens.market.MarketScreen
 import com.micahnyabuto.coinsphere.ui.screens.market.MarketScreenContent
 import com.micahnyabuto.coinsphere.ui.screens.market.MarketViewModel
+import com.micahnyabuto.coinsphere.ui.screens.splash.SplashScreen
 import com.micahnyabuto.coinsphere.ui.theme.CoinSphereTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -61,16 +65,21 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+
             CoinSphereTheme {
                 val navController =rememberNavController()
-
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route ?: Destinations.Market::class.qualifiedName.orEmpty()
-                val showBottomNavigation =true
-                Scaffold(
+                // Show bottom navigation only when NOT on Splash screen
+                val showBottomNavigation = currentRoute !in listOf(
+                    Destinations.Splash::class.qualifiedName,
+                    Destinations.SignUp::class.qualifiedName,
+                    Destinations.SignIn::class.qualifiedName,
+                    Destinations.Details::class.qualifiedName
+                )
+                Scaffold (
                     modifier = Modifier.fillMaxSize(),
                     contentWindowInsets = WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal),
-
                     bottomBar = {
                         if (showBottomNavigation) {
                             Column {
@@ -97,9 +106,9 @@ class MainActivity : ComponentActivity() {
 
                                                         ,
                                                         imageVector = (
-                                                            if (isSelected) navigationItem.selectedIcon
-                                                            else navigationItem.unselectedIcon
-                                                        ),
+                                                                if (isSelected) navigationItem.selectedIcon
+                                                                else navigationItem.unselectedIcon
+                                                                ),
                                                         contentDescription = navigationItem.label
                                                     )
                                                     Spacer(modifier = Modifier.height(4.dp))
@@ -131,7 +140,8 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
-                ){
+
+                ) { innerpadding ->
                     AppNavHost(
                         modifier = Modifier.fillMaxSize(),
                         navController = navController
