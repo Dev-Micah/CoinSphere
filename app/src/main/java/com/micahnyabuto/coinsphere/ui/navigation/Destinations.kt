@@ -30,6 +30,7 @@ sealed class Destinations {
     @Serializable
     object Details
 
-
+    @Serializable
+    object Profile
 
 }
