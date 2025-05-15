@@ -182,9 +182,7 @@ fun CoinsRow(
     Row(
         modifier = Modifier.fillMaxSize()
             .padding(start = 8.dp)
-            .clickable {
-                navController.navigate(Destinations.Details)
-            },
+
 
     ) {
         Text(text = "${coin.market_cap_rank}")
@@ -276,19 +274,23 @@ fun TopAppABar(){
         topBar = {
             TopAppBar(
                 title = {
-                    Text("CoinSphere",
-                        modifier = Modifier.padding(start = 8.dp),
-                        style = MaterialTheme.typography.titleLarge
-                    )
+                    Row {
+                        Image(
+                            modifier = Modifier
+                                .size(28.dp)
+                                .clip(CircleShape),
+                            painter = painterResource(id = R.drawable.splash),
+                            contentDescription = "logo",
+                        )
+                        Text(
+                            "CoinSphere",
+                            modifier = Modifier.padding(start = 8.dp),
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                    }
+
                 },
                 actions = {
-                    Icon(
-                        imageVector = Icons.Default.Notifications,
-                        contentDescription = "notifications",
-
-                        )
-                },
-                navigationIcon = {
                     Image(
                         modifier= Modifier
                             .size(32.dp)
@@ -300,7 +302,8 @@ fun TopAppABar(){
 
                     )
 
-                }
+                },
+
             )
         },
 
