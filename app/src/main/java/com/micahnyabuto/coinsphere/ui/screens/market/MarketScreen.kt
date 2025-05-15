@@ -2,7 +2,6 @@ package com.micahnyabuto.coinsphere.ui.screens.market
 
 
 import android.annotation.SuppressLint
-import android.util.Log.i
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -19,19 +18,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -53,7 +47,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
@@ -75,34 +68,35 @@ fun MarketScreen(
     navController : NavController
 ){
     val context =LocalContext.current
-    val uiState by viewModel.uiState.collectAsState()
+    val marketUiState by viewModel.marketUiState.collectAsState()
     var wasLoading by remember { mutableStateOf(false) }
 
-    LaunchedEffect(uiState) {
-        if (wasLoading && uiState is UiState.Success) {
+    LaunchedEffect(marketUiState) {
+        if (wasLoading && marketUiState is MarketUiState.Success) {
             Toast.makeText(context, "Refreshed successfully", Toast.LENGTH_SHORT).show()
         }
-        wasLoading = uiState is UiState.Loading
-        if (uiState is UiState.Error) {
-            Toast.makeText(context, "Failed to get data 🥲 Check your internet connection and try again", Toast.LENGTH_SHORT).show()
+        wasLoading = marketUiState is MarketUiState.Loading
+        if (marketUiState is MarketUiState.Error) {
+            Toast.makeText(context, "Failed to get data", Toast.LENGTH_SHORT).show()
         }
     }
 
-
+   TopAppABar()
 
     LaunchedEffect(Unit) {
         viewModel.fetchCoins()
     }
-    when (uiState) {
-        is UiState.Loading -> {
+    when (marketUiState) {
+        is MarketUiState.Loading -> {
             MarketShimmerList()
         }
-        is UiState.Success -> {
-            MarketScreenContent(coins = (uiState as UiState.Success).data,
+        is MarketUiState.Success -> {
+            MarketScreenContent(
+                coins =(marketUiState as MarketUiState.Success).coins,
                 navController = navController,
             )
         }
-        is UiState.Error -> {
+        is MarketUiState.Error -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -124,12 +118,14 @@ fun MarketScreen(
     }
 
 
+
 }
 
 /**
  * The content of the market screen.
  */
 
+@SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MarketScreenContent(
@@ -138,53 +134,19 @@ fun MarketScreenContent(
     viewModel: MarketViewModel =hiltViewModel(),
     navController: NavController
 ){
-  /*
-  * Swipe refresh state for the market screen.
+  /**
+   *  Swipe refresh state for the market screen.
    */
-
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
-
-    Scaffold(
-        modifier = Modifier,
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text("CoinSphere",
-                        modifier = Modifier.padding(start = 8.dp),
-                        style = MaterialTheme.typography.titleLarge
-                        )
-                },
-                actions = {
-                    Icon(
-                        imageVector = Icons.Default.Notifications,
-                        contentDescription = "notifications",
-
-                    )
-                },
-                navigationIcon = {
-                    Image(
-                        modifier= Modifier
-                            .size(32.dp)
-                            .clip(CircleShape)
-                            ,
-                        painter = painterResource(id =R.drawable.prof),
-                        contentDescription = "Profile",
-                        contentScale = ContentScale.Crop
-
-                    )
-
-                }
-            )
-        }
-    ) { innerpadding ->
 
         SwipeRefresh(
             state = swipeRefreshState,
             onRefresh = { viewModel.fetchCoins() },
-        )
-        {
+
+        ){
+
             LazyColumn(
-                modifier = Modifier.padding(innerpadding),
+                modifier = Modifier.padding(top =85.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(coins) { coin ->
@@ -197,7 +159,7 @@ fun MarketScreenContent(
 
                 }
             }
-        }
+
 
             }
 
@@ -267,7 +229,7 @@ fun CoinShimmerRow() {
     Row(
         modifier = Modifier
             .fillMaxWidth(0.9f)
-            .padding(top = 70.dp),
+            .padding(top = 80.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -307,10 +269,52 @@ fun CoinShimmerRow() {
         }
     }
 }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopAppABar(){
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text("CoinSphere",
+                        modifier = Modifier.padding(start = 8.dp),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                },
+                actions = {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = "notifications",
+
+                        )
+                },
+                navigationIcon = {
+                    Image(
+                        modifier= Modifier
+                            .size(32.dp)
+                            .clip(CircleShape)
+                        ,
+                        painter = painterResource(id =R.drawable.prof),
+                        contentDescription = "Profile",
+                        contentScale = ContentScale.Crop
+
+                    )
+
+                }
+            )
+        },
+
+        ) { innerpadding ->
+
+    }
+}
+
+
+
 @Composable
 fun MarketShimmerList() {
     LazyColumn {
-        items(150) { // Show 100 shimmer rows
+        items(100) { // Show 100 shimmer rows
             CoinShimmerRow()
         }
     }
