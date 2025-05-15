@@ -18,14 +18,17 @@ import com.micahnyabuto.coinsphere.ui.screens.market.MarketViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.micahnyabuto.coinsphere.data.remote.Coin
+
 
 @Composable
 fun FavouritesScreen(
     favouritesViewModel: FavouritesViewModel = hiltViewModel(),
-    marketViewModel: MarketViewModel = hiltViewModel()
+    marketViewModel: MarketViewModel = hiltViewModel(),
+    navController : NavController
 ) {
+
     val allCoins by marketViewModel.allCoins.collectAsState()
     LaunchedEffect(allCoins) {
         favouritesViewModel.setAllCoins(allCoins)

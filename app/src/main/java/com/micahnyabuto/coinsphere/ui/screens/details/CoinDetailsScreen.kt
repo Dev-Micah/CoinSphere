@@ -1,209 +1,173 @@
-//package com.micahnyabuto.coinsphere.ui.screens.details
-//
-//import android.annotation.SuppressLint
-//import androidx.compose.foundation.Image
-//import androidx.compose.foundation.layout.Arrangement
-//import androidx.compose.foundation.layout.Column
-//import androidx.compose.foundation.layout.PaddingValues
-//import androidx.compose.foundation.layout.Row
-//import androidx.compose.foundation.layout.Spacer
-//import androidx.compose.foundation.layout.fillMaxSize
-//import androidx.compose.foundation.layout.fillMaxWidth
-//import androidx.compose.foundation.layout.height
-//import androidx.compose.foundation.layout.padding
-//import androidx.compose.foundation.layout.size
-//import androidx.compose.foundation.lazy.LazyColumn
-//import androidx.compose.foundation.shape.RoundedCornerShape
-//import androidx.compose.material.icons.Icons
-//import androidx.compose.material.icons.filled.Star
-//import androidx.compose.material3.Button
-//import androidx.compose.material3.CenterAlignedTopAppBar
-//import androidx.compose.material3.CircularProgressIndicator
-//import androidx.compose.material3.ExperimentalMaterial3Api
-//import androidx.compose.material3.Icon
-//import androidx.compose.material3.IconButton
-//import androidx.compose.material3.MaterialTheme
-//import androidx.compose.material3.Scaffold
-//import androidx.compose.material3.Text
-//import androidx.compose.runtime.Composable
-//import androidx.compose.runtime.LaunchedEffect
-//import androidx.compose.runtime.collectAsState
-//import androidx.compose.ui.Alignment
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.layout.ContentScale
-//import androidx.compose.ui.unit.dp
-//import androidx.compose.runtime.getValue
-//import androidx.compose.ui.text.TextStyle
-//import androidx.hilt.navigation.compose.hiltViewModel
-//import coil.compose.rememberAsyncImagePainter
-//import com.micahnyabuto.coinsphere.data.remote.Coin
-//import com.micahnyabuto.coinsphere.ui.screens.market.MarketViewModel
-//import com.micahnyabuto.coinsphere.ui.screens.market.UiState
-//
-//
-//@Composable
-//fun CoinDetailsScreen(
-//    modifier: Modifier = Modifier,
-//    viewModel: MarketViewModel = hiltViewModel(),
-//){
-//    val uiState by viewModel.uiState.collectAsState()
-//
-//    LaunchedEffect (Unit) {
-//        viewModel.fetchCoins()
-//    }
-//
-//    when (uiState) {
-//        is UiState.Loading -> {
-//            CircularProgressIndicator(
-//                color = MaterialTheme.colorScheme.primary,
-//                )
-//        }
-//
-//        is UiState.Success -> {
-//            CoinDetailsScreenContent(
-//                coin = coin
-//            )
-//        }
-//
-//        is UiState.Error -> {
-//            Column(
-//                modifier = Modifier.fillMaxSize(),
-//                verticalArrangement = Arrangement.Center,
-//                horizontalAlignment = Alignment.CenterHorizontally
-//            ) {
-//                Text(
-//                    "Something went wrong!",
-//                    style = MaterialTheme.typography.titleLarge.copy()
-//                )
-//                Spacer(Modifier.height(25.dp))
-//                Button(
-//                    onClick = { viewModel.fetchCoins() },
-//                    modifier = Modifier.padding(8.dp),
-//                    shape = RoundedCornerShape(8.dp)
-//                ) {
-//                    Text("Refresh again")
-//                }
-//            }
-//        }
-//
-//    }
-//
-//}
-//
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun CoinDetailsScreenContent(
-//    coin: Coin
-//){
-//    Scaffold (
-//        topBar = {
-//            CenterAlignedTopAppBar(
-//                title ={
-//                    Row {
-//
-//                        Image(
-//                            painter = rememberAsyncImagePainter(coin.image),
-//                            contentDescription = coin.name,
-//                            modifier = Modifier.size(35.dp),
-//                            contentScale = ContentScale.Crop
-//                        )
-//
-//                        Text("${coin.name.uppercase()}")
-//
-//                        Spacer(Modifier.size(30.dp))
-//
-//                        IconButton(onClick = {}) {
-//                            Icon(
-//                                imageVector = Icons.Default.Star,
-//                                contentDescription = "isFavourite"
-//                            )
-//                        }
-//                    }
-//                }
-//            )
-//        }
-//    ){ innerPadding ->
-//        LazyColumn (
-//            modifier = Modifier
-//                .padding(innerPadding)
-//                .fillMaxWidth(),
-//            contentPadding = PaddingValues(horizontal = 16.dp),
-//            verticalArrangement = Arrangement.spacedBy(16.dp),
-//            horizontalAlignment = Alignment.CenterHorizontally,
-//
-//        ){
-//            item {
-//                CoinDetailsRow(
-//                    title = "Rank",
-//                    value = "${coin.market_cap_rank}"
-//                )
-//            }
-//            item {
-//                CoinDetailsRow(
-//                    title = "Price",
-//                    value = "$${coin.current_price}"
-//                )
-//            }
-//            item {
-//                CoinDetailsRow(
-//                    title = "24h price change",
-//                    value = "$${coin.price_change_24h}"
-//                )
-//            }
-//            item {
-//                CoinDetailsRow(
-//                    title = "24h High",
-//                    value = "$${coin.high_24h}"
-//                )
-//            }
-//            item {
-//                CoinDetailsRow(
-//                    title = "24h Low",
-//                    value = "$${coin.low_24h}"
-//                )
-//            }
-//            item {
-//                CoinDetailsRow(
-//                    title = "Market Cap",
-//                    value = "$${coin.market_cap}"
-//                )
-//
-//            }
-//            item {
-//                CoinDetailsRow(
-//                    title = "Ath",
-//                    value = "$${coin.ath}}"
-//                )
-//
-//            }
-//        }
-//
-//    }
-//}
-//@SuppressLint("ModifierParameter")
-//@Composable
-//fun CoinDetailsRow(
-//    title: String,
-//    value: String,
-//    titleStyle: TextStyle = MaterialTheme.typography.bodySmall,
-//    valueStyle: TextStyle = MaterialTheme.typography.bodySmall,
-//    modifier: Modifier = Modifier
-//){
-//    Row(
-//        modifier = modifier.fillMaxWidth(),
-//        verticalAlignment = Alignment.CenterVertically,
-//        horizontalArrangement = Arrangement.SpaceBetween,
-//    ) {
-//        Text(
-//            text = title,
-//            style = titleStyle,
-//        )
-//
-//        Text(
-//            text = value,
-//            style = valueStyle,
-//        )
-//    }
-//
-//
-//}
+package com.micahnyabuto.coinsphere.ui.screens.details
+
+import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
+import com.micahnyabuto.coinsphere.data.remote.Coin
+
+@Composable
+fun CoinDetailsScreen(
+    viewModel: CoinDetailsViewModel = hiltViewModel(),
+) {
+    val coinUiState by viewModel.coinUiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getDetails()
+    }
+
+    when (coinUiState) {
+        is CoinUiState.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        is CoinUiState.Success -> {
+            CoinDetailsScreenContent(
+                coins = (coinUiState as CoinUiState.Success).coin
+            )
+        }
+
+        is CoinUiState.Error -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    "Something went wrong!",
+                    style = MaterialTheme.typography.titleLarge.copy()
+                )
+                Spacer(Modifier.height(25.dp))
+                Button(
+                    onClick = { viewModel.getDetails() },
+                    modifier = Modifier.padding(8.dp),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text("Refresh again")
+                }
+            }
+        }
+    }
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun CoinDetailsScreenContent(
+    coins: List<Coin>
+) {
+    Scaffold(
+        modifier = Modifier.fillMaxSize()
+    ) { paddingValues ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(coins) { coin ->
+                CoinDetailsRow(coin = coin)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CoinDetailsRow(
+    coin: Coin
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Image(
+                        painter = rememberAsyncImagePainter(coin.image),
+                        contentDescription = coin.name,
+                        modifier = Modifier.size(35.dp),
+                        contentScale = ContentScale.Crop
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(text = coin.name.uppercase())
+                }
+
+                IconButton(onClick = { /* Handle favorite */ }) {
+                    Icon(
+                        imageVector = Icons.Default.Star,
+                        contentDescription = "isFavourite"
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            CoinDetails("Rank", "${coin.market_cap_rank}")
+            CoinDetails("Price", "$${coin.current_price}")
+            CoinDetails("24h price change", "$${coin.price_change_24h}")
+            CoinDetails("24h High", "$${coin.high_24h}")
+            CoinDetails("24h Low", "$${coin.low_24h}")
+            CoinDetails("Market Cap", "$${coin.market_cap}")
+            CoinDetails("Market cap change 24h", "$${coin.market_cap_change_24h}")
+            CoinDetails("Ath", "$${coin.ath}")
+
+        }
+    }
+}
+
+@SuppressLint("ModifierParameter")
+@Composable
+fun CoinDetails(
+    title: String,
+    value: String,
+    titleStyle: TextStyle = MaterialTheme.typography.bodySmall,
+    valueStyle: TextStyle = MaterialTheme.typography.bodySmall,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(
+            text = title,
+            style = titleStyle,
+        )
+
+        Text(
+            text = value,
+            style = valueStyle,
+        )
+    }
+}

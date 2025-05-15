@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.micahnyabuto.coinsphere" />
+                  <option name="mobileSdkAppId" value="1:226299557117:android:a869c150c372d06140fa94" />
+                  <option name="projectId" value="coinsphere-e5f4a" />
+                  <option name="projectNumber" value="226299557117" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

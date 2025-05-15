@@ -1,5 +1,6 @@
 package com.micahnyabuto.coinsphere.ui.screens.market
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.micahnyabuto.coinsphere.data.remote.Coin
@@ -11,19 +12,28 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okio.IOException
 import javax.inject.Inject
 
 @HiltViewModel
 class MarketViewModel@Inject constructor(
     private val coinSphereRepository: CoinSphereRepository
 ) : ViewModel(){
-    private val _uiState = MutableStateFlow<UiState<List<Coin>>>(UiState.Loading)
-    val uiState: StateFlow<UiState<List<Coin>>> = _uiState.asStateFlow()
+
+    var marketUiState = MutableStateFlow< MarketUiState>(MarketUiState.Loading)
+    private set
+
 
     private val _allCoins = MutableStateFlow<List<Coin>>(emptyList())
+    val allCoins = _allCoins.asStateFlow()
 
-    val allCoins: StateFlow<List<Coin>> = _allCoins.asStateFlow()
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
+    private val _error = MutableStateFlow<String?>(null)
+    val error = _error.asStateFlow()
 
 
 
@@ -48,21 +58,26 @@ class MarketViewModel@Inject constructor(
 
     fun fetchCoins(){
         viewModelScope.launch {
+            _isLoading.value =true
+            _error.value = null
 
-            _uiState.value = UiState.Loading
-            try {
-            val coins =coinSphereRepository.getCoins()
-                _allCoins.value =coins
-            _uiState.value = UiState.Success(coins)
-            } catch (
-               e: Exception
-            ){
-                _uiState.value = UiState.Error(e.localizedMessage ?: "Unexpected error")
+            marketUiState.update {
+                try {
+                    val listResult = coinSphereRepository.getCoins()
+
+                    _allCoins.value =listResult
+
+                    Log.e("MarketViewModel" ,"$listResult")
+                    MarketUiState.Success(coins = listResult)
+                } catch (e: IOException){
+                    MarketUiState.Error
+                }
 
             }
 
         }
     }
+
 
     fun onSearchQueryChange(query: String){
         _searchQuery.value =query
@@ -71,8 +86,8 @@ class MarketViewModel@Inject constructor(
 
 
 }
-sealed class UiState<out T> {
-    object Loading : UiState<Nothing>()
-    data class Success<T>(val data: T) : UiState<T>()
-    data class Error(val message: String) : UiState<Nothing>()
+sealed interface MarketUiState{
+    object Loading : MarketUiState
+    data class Success(val coins: List<Coin>): MarketUiState
+    data object Error: MarketUiState
 }
