@@ -1,6 +1,5 @@
 package com.micahnyabuto.coinsphere.ui.screens.search
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,30 +8,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.micahnyabuto.coinsphere.data.remote.Coin
 import com.micahnyabuto.coinsphere.ui.screens.market.CoinsRow
 import com.micahnyabuto.coinsphere.ui.screens.market.MarketShimmerList
+import com.micahnyabuto.coinsphere.ui.screens.market.MarketUiState
 import com.micahnyabuto.coinsphere.ui.screens.market.MarketViewModel
-import com.micahnyabuto.coinsphere.ui.screens.market.UiState
-import java.nio.file.WatchEvent
+
 
 
 @Composable
@@ -43,13 +36,13 @@ fun SearchScreen(
 ) {
     val searchQuery by viewModel.searchQuery.collectAsState()
     val filteredCoins by viewModel.filteredCoins.collectAsState()
-    val uiState by viewModel.uiState.collectAsState()
+    val marketUiState by viewModel.marketUiState.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.fetchCoins()
     }
     Scaffold(
-        modifier = Modifier.padding(top = 26.dp),
+        modifier = Modifier.padding(top = 35.dp),
         topBar = {
             OutlinedTextField(
                 value = searchQuery,
@@ -64,12 +57,12 @@ fun SearchScreen(
 
         }
     ) { innerpadding ->
-        when (uiState) {
-            is UiState.Loading -> {
+        when (marketUiState) {
+            is MarketUiState.Loading -> {
                 MarketShimmerList()
             }
 
-            is UiState.Success -> {
+            is MarketUiState.Success -> {
 
                 LazyColumn(
                     modifier = Modifier.padding(
@@ -85,20 +78,22 @@ fun SearchScreen(
                             coin = coin,
                             navController = navController
                         )
+                        HorizontalDivider()
 
 
                     }
                 }
             }
-            is UiState.Error -> {
+            is MarketUiState.Error -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Failed to load 🥲")
+                    Text("Failed to load")
                 }
             }
 
         }
     }
+
 }
