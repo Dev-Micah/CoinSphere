@@ -24,20 +24,20 @@ enum class BottomNavigation(
         route = Destinations.Market
     ),
 
-    News(
-        label = "News",
-        selectedIcon = Icons.Default.Article,
-        unselectedIcon = Icons.Default.Article,
-        route = Destinations.News
-    ),
+//    News(
+//        label = "News",
+//        selectedIcon = Icons.Default.Article,
+//        unselectedIcon = Icons.Default.Article,
+//        route = Destinations.News
+//    ),
 
-    Favourite(
-        label ="Favourites",
-        selectedIcon = Icons.Default.Star,
-        unselectedIcon = Icons.Default.Star,
-        route = Destinations.Favourite
-
-    ),
+//    Favourite(
+//        label ="Favourites",
+//        selectedIcon = Icons.Default.Star,
+//        unselectedIcon = Icons.Default.Star,
+//        route = Destinations.Favourite
+//
+//    ),
 
     Search(
         label ="Search",
