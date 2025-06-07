@@ -12,8 +12,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.micahnyabuto.coinsphere.ui.screens.settings.SettingsViewModel
 
 private val LightColorScheme = lightColorScheme(
     primary = PrimaryColor,
