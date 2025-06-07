@@ -76,7 +76,7 @@ class MainActivity : ComponentActivity() {
                 val navController =rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route ?: Destinations.Market::class.qualifiedName.orEmpty()
-                // Show bottom navigation only when NOT on Splash screen
+                //Do not  Show bottom navigation when
                 val showBottomNavigation = currentRoute !in listOf(
                     Destinations.Splash::class.qualifiedName,
                     Destinations.SignUp::class.qualifiedName,
@@ -149,7 +149,7 @@ class MainActivity : ComponentActivity() {
 
                 ) { innerpadding ->
                     AppNavHost(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.padding(innerpadding),
                         navController = navController
                     )
                 }
