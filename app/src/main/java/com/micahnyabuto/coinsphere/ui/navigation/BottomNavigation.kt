@@ -14,14 +14,14 @@ enum class BottomNavigation(
     val label: String,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
-    val route: Any
+    val route: String
 ){
 
     Market(
         label = "Market",
         selectedIcon = Icons.Default.BarChart,
         unselectedIcon = Icons.Default.BarChart,
-        route = Destinations.Market
+        route = Destinations.Market.route
     ),
 
 //    News(
@@ -43,14 +43,14 @@ enum class BottomNavigation(
         label ="Search",
         selectedIcon = Icons.Default.Search,
         unselectedIcon = Icons.Default.Search,
-        route = Destinations.Search
+        route = Destinations.Search.route
     ),
 
     Settings(
         label = "Settings",
         selectedIcon = Icons.Default.Settings,
         unselectedIcon = Icons.Default.Settings,
-        route = Destinations.Settings
+        route = Destinations.Settings.route
     )
 
 }
