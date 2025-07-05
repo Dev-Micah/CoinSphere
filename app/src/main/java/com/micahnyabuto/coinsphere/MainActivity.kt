@@ -78,10 +78,10 @@ class MainActivity : ComponentActivity() {
                 val currentRoute = navBackStackEntry?.destination?.route ?: Destinations.Market::class.qualifiedName.orEmpty()
                 //Do not  Show bottom navigation when
                 val showBottomNavigation = currentRoute !in listOf(
-                    Destinations.Splash::class.qualifiedName,
-                    Destinations.SignUp::class.qualifiedName,
-                    Destinations.SignIn::class.qualifiedName,
-                    Destinations.Details::class.qualifiedName
+                    Destinations.Splash.route::class.qualifiedName,
+                    Destinations.SignUp.route::class.qualifiedName,
+                    Destinations.SignIn.route::class.qualifiedName,
+                    Destinations.Details.route::class.qualifiedName
                 )
                 Scaffold (
                     modifier = Modifier.fillMaxSize(),
