@@ -38,14 +38,14 @@ fun AppNavHost(
     NavHost (
          modifier =modifier,
          navController = navController,
-         startDestination = Destinations.Splash,
+         startDestination = Destinations.Splash.route,
 
      ){
-        composable <Destinations.Splash>{
+        composable (Destinations.Splash.route){
             SplashScreen(
                 onSplashFinished = {
-                    navController.navigate(Destinations.Market){
-                        popUpTo(Destinations.Splash){
+                    navController.navigate(Destinations.Market.route){
+                        popUpTo(Destinations.Splash.route){
                             inclusive =true
                         }
                     }
@@ -53,48 +53,48 @@ fun AppNavHost(
                 }
             )
         }
-        composable <Destinations.Market>{
+        composable (Destinations.Market.route){
             MarketScreen(
                 navController =navController
             )
         }
 
-        composable <Destinations.Details>{
+        composable (Destinations.Details.route){
             CoinDetailsScreen(
                 viewModel = viewModel
 
             )
         }
-        composable <Destinations.SignUp>{
+        composable (Destinations.SignUp.route){
             SignupScreen(
                 authViewModel = authViewModel,
                 navController = navController
             )
         }
-        composable <Destinations.SignIn>{
+        composable (Destinations.SignIn.route){
             LoginScreen(
                 navController =navController
             )
         }
 
-        composable <Destinations.News>{
+        composable (Destinations.News.route){
             NewsScreen(
                 navController =navController
             )
         }
-        composable <Destinations.Favourite>{
+        composable (Destinations.Favourite.route){
             FavouritesScreen(
                 favouritesViewModel = favouritesViewModel,
                 marketViewModel = marketViewModel,
                 navController =navController
             )
         }
-        composable <Destinations.Search>{
+        composable (Destinations.Search.route){
             SearchScreen(
                 navController =navController
             )
         }
-        composable <Destinations.Settings>{
+        composable (Destinations.Settings.route){
             SettingsScreen()
         }
 
