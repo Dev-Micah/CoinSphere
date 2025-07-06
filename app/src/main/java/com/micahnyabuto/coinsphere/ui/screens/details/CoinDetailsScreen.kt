@@ -21,12 +21,12 @@ import com.micahnyabuto.coinsphere.data.remote.Coin
 
 @Composable
 fun CoinDetailsScreen(
-    viewModel: CoinDetailsViewModel = hiltViewModel(),
+    coinDetailsViewModel:CoinDetailsViewModel = hiltViewModel(),
 ) {
-    val coinUiState by viewModel.coinUiState.collectAsState()
+    val coinUiState by coinDetailsViewModel.coinUiState.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.getDetails()
+        coinDetailsViewModel.getDetails()
     }
 
     when (coinUiState) {
@@ -57,7 +57,7 @@ fun CoinDetailsScreen(
                 )
                 Spacer(Modifier.height(25.dp))
                 Button(
-                    onClick = { viewModel.getDetails() },
+                    onClick = { coinDetailsViewModel.getDetails() },
                     modifier = Modifier.padding(8.dp),
                     shape = RoundedCornerShape(8.dp)
                 ) {
