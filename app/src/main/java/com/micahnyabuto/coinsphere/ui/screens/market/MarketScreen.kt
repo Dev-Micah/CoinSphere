@@ -20,12 +20,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -151,9 +148,10 @@ fun MarketScreenContent(
             ) {
                 items(coins) { coin ->
                     CoinsRow(
-                        coin = coin,
-                        navController = navController
-                    )
+                        coin=coin
+                    ){
+                        navController.navigate(Destinations.Details.detailsRoute(coin.name))
+                    }
                     HorizontalDivider()
 
 
@@ -176,16 +174,20 @@ fun CoinsRow(
     modifier: Modifier= Modifier,
     coin: Coin,
     viewModel: FavouritesViewModel =hiltViewModel(),
-    navController: NavController
+    onClick: ()-> Unit
 ) {
 
     Row(
         modifier = Modifier.fillMaxSize()
             .padding(start = 8.dp)
+            .clickable{onClick()}
 
 
     ) {
+
         Text(text = "${coin.market_cap_rank}")
+
+
 
         Spacer(modifier = Modifier.width(16.dp))
 
