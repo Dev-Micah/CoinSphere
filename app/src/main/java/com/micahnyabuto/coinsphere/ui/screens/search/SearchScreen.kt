@@ -24,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.DialogNavigator
+import com.micahnyabuto.coinsphere.ui.navigation.Destinations
 import com.micahnyabuto.coinsphere.ui.screens.market.CoinsRow
 import com.micahnyabuto.coinsphere.ui.screens.market.MarketShimmerList
 import com.micahnyabuto.coinsphere.ui.screens.market.MarketUiState
@@ -84,10 +86,10 @@ fun SearchScreen(
                 ) {
                     items(filteredCoins) { coin ->
                         CoinsRow(
-                            modifier = modifier,
                             coin = coin,
-                            navController = navController
-                        )
+                        ){
+                            navController.navigate(Destinations.Details.detailsRoute(coin.name))
+                        }
                         HorizontalDivider()
 
 
