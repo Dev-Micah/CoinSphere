@@ -1,11 +1,20 @@
 package com.micahnyabuto.coinsphere.ui.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.micahnyabuto.coinsphere.ui.auth.Signin.LoginScreen
@@ -32,7 +41,7 @@ fun AppNavHost(
     val favouritesViewModel: FavouritesViewModel = hiltViewModel()
     val marketViewModel: MarketViewModel = hiltViewModel()
     val authViewModel: AuthViewModel = hiltViewModel()
-    val viewModel: CoinDetailsViewModel =hiltViewModel()
+    val coinDetailsViewModel: CoinDetailsViewModel =hiltViewModel()
 
 
     NavHost (
@@ -59,11 +68,31 @@ fun AppNavHost(
             )
         }
 
-        composable (Destinations.Details.route){
+        composable (
+            Destinations.Details.route,
+            arguments = listOf(navArgument("coinName") {type = NavType.StringType})
+        ){backStackEntry->
+            val coinName = backStackEntry.arguments?.getString("coinName")
+            val allCoins by marketViewModel.allCoins.collectAsState()
+            LaunchedEffect (
+                Unit
+            ){
+                coinDetailsViewModel.getDetails()
+            }
+            val coin = allCoins.find{it.name == coinName}
+            if (coin != null){
             CoinDetailsScreen(
-                viewModel = viewModel
+                coinDetailsViewModel = coinDetailsViewModel
 
             )
+        }else{
+                Box(
+                    Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("Feature is coming soon")
+                }
+        }
         }
         composable (Destinations.SignUp.route){
             SignupScreen(
