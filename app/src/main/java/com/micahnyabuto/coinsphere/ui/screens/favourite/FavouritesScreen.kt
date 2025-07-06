@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.micahnyabuto.coinsphere.ui.navigation.Destinations
 
 
 @Composable
@@ -62,9 +63,10 @@ fun FavouritesScreenContent(
         ){
             items(favouriteCoins){ coin ->
                 CoinsRow(
-                    coin =coin,
-                    navController = navController
-                )
+                    coin = coin
+                ){
+                    navController.navigate(Destinations.Details.detailsRoute(coin.name))
+                }
             }
         }
     }
