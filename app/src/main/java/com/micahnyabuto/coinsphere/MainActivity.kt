@@ -73,86 +73,8 @@ class MainActivity : ComponentActivity() {
             val isDarkMode by viewModel.isDarkMode.collectAsState()
 
             CoinSphereTheme (darkTheme = isDarkMode){
-                val navController =rememberNavController()
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route ?: Destinations.Market::class.qualifiedName.orEmpty()
-                //Do not  Show bottom navigation when
-                val showBottomNavigation = currentRoute !in listOf(
-                    Destinations.Splash.route::class.qualifiedName,
-                    Destinations.SignUp.route::class.qualifiedName,
-                    Destinations.SignIn.route::class.qualifiedName,
-                    Destinations.Details.route::class.qualifiedName
-                )
-                Scaffold (
-                    modifier = Modifier.fillMaxSize(),
-                    contentWindowInsets = WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal),
-                    bottomBar = {
-                        if (showBottomNavigation) {
-                            Column {
-                                HorizontalDivider(thickness = 2.dp)
-                                NavigationBar(
-                                    tonalElevation = 0.dp,
-                                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                                ) {
-                                    BottomNavigation.entries.forEachIndexed { index, navigationItem ->
-                                        val isSelected by remember(currentRoute) {
-                                            derivedStateOf { currentRoute == navigationItem.route::class.qualifiedName }
-                                        }
 
-                                        NavigationBarItem(
-                                            selected = isSelected,
-                                            icon = {
-                                                Column(
-                                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                                    verticalArrangement = Arrangement.Center,
-                                                    modifier = Modifier.padding(vertical = 8.dp)
-                                                ) {
-                                                    Icon(
-                                                        modifier = Modifier.size(24.dp)
-
-                                                        ,
-                                                        imageVector = (
-                                                                if (isSelected) navigationItem.selectedIcon
-                                                                else navigationItem.unselectedIcon
-                                                                ),
-                                                        contentDescription = navigationItem.label
-                                                    )
-                                                    Spacer(modifier = Modifier.height(4.dp))
-                                                    Text(
-                                                        text = navigationItem.label,
-                                                        style = MaterialTheme.typography.labelSmall.copy(
-                                                            fontSize = 10.sp,
-                                                            fontWeight = if (isSelected) FontWeight.SemiBold
-                                                            else FontWeight.Normal
-                                                        )
-                                                    )
-                                                }
-                                            },
-                                            onClick = {
-                                                navController.navigate(navigationItem.route)
-                                            },
-                                            colors = NavigationBarItemDefaults.colors(
-                                                indicatorColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
-                                                    elevation = 0.dp
-                                                ),
-                                                selectedIconColor = MaterialTheme.colorScheme.primary,
-                                                selectedTextColor = MaterialTheme.colorScheme.primary,
-                                                unselectedIconColor = MaterialTheme.colorScheme.onSurface,
-                                                unselectedTextColor = MaterialTheme.colorScheme.onSurface
-                                            )
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                ) { innerpadding ->
-                    AppNavHost(
-                        modifier = Modifier.padding(innerpadding),
-                        navController = navController
-                    )
-                }
+                AppNavHost()
 
             }
         }
