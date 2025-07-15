@@ -12,6 +12,8 @@ sealed class Destinations (val route: String){
     object Settings: Destinations("settings")
     object Details: Destinations("coinDetails/{coinName}")
 
+    object Main: Destinations("main")
+
     object Profile: Destinations("profile")
 
     fun detailsRoute (coinName: String) = "coinDetails/$coinName"
