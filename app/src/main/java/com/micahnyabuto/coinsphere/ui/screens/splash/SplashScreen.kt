@@ -21,16 +21,24 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.micahnyabuto.coinsphere.R
+import com.micahnyabuto.coinsphere.ui.navigation.Destinations
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    onSplashFinished: () -> Unit
+    navController: NavController
 ){
     LaunchedEffect(Unit) {
-        delay(2000)
-        onSplashFinished()
+        delay(3000)
+        navController.navigate(Destinations.Main.route){
+            popUpTo(Destinations.Splash.route){
+                inclusive =true
+            }
+
+
+    }
     }
 
     Box(
