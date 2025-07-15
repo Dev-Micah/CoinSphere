@@ -39,11 +39,15 @@ fun SignupScreen(
     var password by remember { mutableStateOf("") }
 
 
-    var context = LocalContext.current
+    val context = LocalContext.current
 
     Column (
         modifier = Modifier.fillMaxWidth()
-            .padding(32.dp),
+            .padding(
+                start = 24.dp,
+                end = 24.dp,
+                top = 150.dp
+            ),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
@@ -78,8 +82,8 @@ fun SignupScreen(
         Button(onClick = {
             authViewModel.signUp(email ,name, password){ success ,errorMessage ->
                 if (success){
-                    navController.navigate(Destinations.Market){
-                        popUpTo(Destinations.Market){inclusive = true}
+                    navController.navigate(Destinations.Market.route){
+                        popUpTo(Destinations.Market.route){inclusive = true}
                     }
 
                 }else{
@@ -102,9 +106,14 @@ fun SignupScreen(
         Spacer(Modifier.height(20.dp))
 
         Row {
-            TextButton(onClick = {navController.navigate(Destinations.SignIn)}) {
+            TextButton(onClick = {navController.navigate(Destinations.SignIn.route)}) {
                 Text("Already have an account?Sign in")
             }
+        }
+        Spacer(Modifier.height(20.dp))
+
+        TextButton(onClick = {navController.navigate(Destinations.Market.route)}) {
+            Text("Skip for now")
         }
 
 
