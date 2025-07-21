@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -82,57 +83,45 @@ fun MainGraph(){
                     HorizontalDivider(thickness = 2.dp)
                     NavigationBar(
                         tonalElevation = 0.dp,
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                        containerColor = MaterialTheme.colorScheme.surface
                     ) {
-                        BottomNavigation.entries.forEachIndexed { index, navigationItem ->
-                            val isSelected by remember(currentRoute) {
-                                derivedStateOf { currentRoute == navigationItem.route::class.qualifiedName }
-                            }
+                        BottomNavigation.entries.forEach { navigationItem ->
+
+                            val isSelected = currentRoute == navigationItem.route
 
                             NavigationBarItem(
                                 selected = isSelected,
                                 icon = {
-                                    Column(
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.Center,
-                                        modifier = Modifier.padding(vertical = 8.dp)
-                                    ) {
-                                        Icon(
-                                            modifier = Modifier.size(24.dp)
-
-                                            ,
-                                            imageVector = (
-                                                    if (isSelected) navigationItem.selectedIcon
-                                                    else navigationItem.unselectedIcon
-                                                    ),
-                                            contentDescription = navigationItem.label
+                                    Icon(
+                                        imageVector = if (isSelected) navigationItem.selectedIcon else navigationItem.unselectedIcon,
+                                        contentDescription = navigationItem.label
+                                    )
+                                },
+                                label = {
+                                    Text(
+                                        text = navigationItem.label,
+                                        style = MaterialTheme.typography.labelSmall.copy(
+                                            fontSize = 10.sp,
+                                            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
                                         )
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Text(
-                                            text = navigationItem.label,
-                                            style = MaterialTheme.typography.labelSmall.copy(
-                                                fontSize = 10.sp,
-                                                fontWeight = if (isSelected) FontWeight.SemiBold
-                                                else FontWeight.Normal
-                                            )
-                                        )
-                                    }
+                                    )
                                 },
                                 onClick = {
-                                    navController.navigate(navigationItem.route)
+                                    if (currentRoute != navigationItem.route) {
+                                        navController.navigate(navigationItem.route)
+                                    }
                                 },
                                 colors = NavigationBarItemDefaults.colors(
-                                    indicatorColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
-                                        elevation = 0.dp
-                                    ),
+                                    indicatorColor = Color.Transparent,
                                     selectedIconColor = MaterialTheme.colorScheme.primary,
                                     selectedTextColor = MaterialTheme.colorScheme.primary,
-                                    unselectedIconColor = MaterialTheme.colorScheme.onSurface,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onSurface
+                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             )
                         }
                     }
+
                 }
             }
         }
