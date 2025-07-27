@@ -39,5 +39,30 @@ MVVM is a software architectural pattern that separates the presentation logic (
 
 ---
 
+## 🧱 Project Structure
+
+```text
+com.coinsphere
+│
+├── data
+│   ├── remote        # Retrofit API services and DTOs
+│   ├── local         # Room database, DAOs, entities
+│   └── repository    # Repository interface and implementation
+│
+├── di                # Hilt modules for dependency injection
+│
+├── ui
+│   ├── screens
+│   │   ├── market    # Main screen showing list of coins
+│   │   ├── details   # Screen for individual coin info
+│   │   └── favorites # User's favorite coins
+│   └── components    # Reusable Composables (e.g., CoinItem, TopBar)
+│
+├── navigation        # Navigation graph and screen routes
+│
+├── utils             # Constants, formatters, and helper functions
+│
+└── MainActivity.kt   # App entry point and NavHost
+```
 
 
