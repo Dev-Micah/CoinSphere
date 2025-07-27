@@ -6,6 +6,8 @@
 # Model-View-ViewModel
 
 MVVM is a software architectural pattern that separates the presentation logic (View) from the business logic (Model) and introduces a middle layer (ViewModel) to mediate communication between them. This design pattern promotes better code organization, testability, and maintainability of Android applications.
+<img width="960" height="571" alt="image" src="https://github.com/user-attachments/assets/fb417718-ec6f-4aa2-9810-dfa88e7035f7" />
+
 
 ## Core Features
 
