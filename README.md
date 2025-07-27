@@ -3,6 +3,9 @@
 **CoinSphere** is a modern Android mobile app built using **Kotlin** and **Jetpack Compose**. It allows users to view **real-time cryptocurrency prices**, explore detailed coin information, and manage a list of their **favorite coins**. Designed with a clean UI and powered by reactive architecture, CoinSphere delivers a fast and smooth crypto tracking experience.
 
 ---
+# Model-View-ViewModel
+
+MVVM is a software architectural pattern that separates the presentation logic (View) from the business logic (Model) and introduces a middle layer (ViewModel) to mediate communication between them. This design pattern promotes better code organization, testability, and maintainability of Android applications.
 
 ## Core Features
 
