@@ -40,8 +40,8 @@ MVVM is a software architectural pattern that separates the presentation logic (
 ---
 # Project Structure
 -**com.coinsphere**
-│
-├── data
+-**│**
+-**├── data**
 │ ├── remote (Retrofit API services, DTOs)
 │ ├── local (Room DB, DAOs, entities)
 │ └── repository (Interface + Implementation)
