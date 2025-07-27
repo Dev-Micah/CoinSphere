@@ -39,7 +39,7 @@ MVVM is a software architectural pattern that separates the presentation logic (
 
 ---
 
-## 🧱 Project Structure
+## Project Structure
 
 ```text
 com.coinsphere
