@@ -38,27 +38,6 @@ MVVM is a software architectural pattern that separates the presentation logic (
 | **API Provider** | CoinGecko (public API) |
 
 ---
-# Project Structure
--**com.coinsphere**
--**│**
--**├── data**
-│ ├── remote (Retrofit API services, DTOs)
-│ ├── local (Room DB, DAOs, entities)
-│ └── repository (Interface + Implementation)
-│
-├── di (Hilt modules)
-│
-├── ui
-│ ├── screens
-│ │ ├── market (coin list screen)
-│ │ ├── details (coin details screen)
-│ │ └── favorites (saved coins)
-│ └── components (reusable composables)
-│
-├── navigation (screen routes and navigation setup)
-│
-├── utils (constants, extensions, formatters)
-│
-└── MainActivity.kt (entry point)
+
 
 
