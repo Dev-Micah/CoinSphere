@@ -23,6 +23,24 @@
     </td>
   </tr>
 </table>
+<table>
+  <tr>
+    <th>Search Screen</th>
+    <th>Settings Screen</th>
+    <th>Error Screen</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img  src="https://github.com/user-attachments/assets/b9a14881-dc19-4f9e-8bc5-ce3dd54476b3" width="250"/>
+    </td>
+    <td align="center">
+      <img src="" width="250"/>
+    </td>
+    <td align="center">
+      <img src=""  width="250"/>
+    </td>
+  </tr>
+</table>
 
 
 
