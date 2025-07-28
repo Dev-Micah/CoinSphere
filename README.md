@@ -4,7 +4,8 @@
 
 ---
 # Screenshots
-<img src="" width="200">
+# SplashScreen
+<img src="<img width="561" height="1280" alt="image" src="https://github.com/user-attachments/assets/877faeac-9441-472e-948c-3711a50f224f" />" width="200">
 <img src="" width="200">
 <img src="" width="200">
 
