@@ -8,18 +8,18 @@
 <table>
   <tr>
     <th>SplashScreen</th>
-    <th>MarketScreen</th>
-    <th>AnotherScreen</th>
+    <th>Loading Screen</th>
+    <th>Market Screen</th>
   </tr>
   <tr>
     <td align="center">
       <img src="https://github.com/user-attachments/assets/877faeac-9441-472e-948c-3711a50f224f" width="250"/>
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/0ee2f767-3154-4703-a3d8-125d0234703d" width="250"/>
+      <img src="https://github.com/user-attachments/assets/7a69e70a-a773-43ab-90ec-d2b7a72c86ca" width="250"/>
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/YOUR-IMAGE-ID" width="250"/>
+      <img src="https://github.com/user-attachments/assets/3f217815-f3db-477d-a1c4-4e091125f715"  width="250"/>
     </td>
   </tr>
 </table>
@@ -37,7 +37,7 @@ MVVM is a software architectural pattern that separates the presentation logic (
 ## Core Features
 
 - **Live Market Data** — Displays real-time prices, ranks, and change percentages of popular cryptocurrencies
-- **Search for coins** — Search for coins.
+- **Search for coins** — Search for coins
 - **Coin Details View** — See in-depth info about each coin, including price, change, symbol, and image
 - **Favorites** — Users can mark coins they want to track closely
 - **Pull-to-Refresh** — Easily refresh market data with a swipe
