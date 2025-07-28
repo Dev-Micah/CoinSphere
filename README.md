@@ -3,11 +3,29 @@
 **CoinSphere** is a modern Android mobile app built using **Kotlin** and **Jetpack Compose**. It allows users to view **real-time cryptocurrency prices**, explore detailed coin information, and manage a list of their **favorite coins**. Designed with a clean UI and powered by reactive architecture, CoinSphere delivers a fast and smooth crypto tracking experience.
 
 ---
-# Screenshots
-# SplashScreen
-<img src="<img width="561" height="1280" alt="image" src="https://github.com/user-attachments/assets/877faeac-9441-472e-948c-3711a50f224f" />" width="200">
-<img src="" width="200">
-<img src="" width="200">
+## Screenshots
+
+<table>
+  <tr>
+    <th>SplashScreen</th>
+    <th>MarketScreen</th>
+    <th>AnotherScreen</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/877faeac-9441-472e-948c-3711a50f224f" width="250"/>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/0ee2f767-3154-4703-a3d8-125d0234703d" width="250"/>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/YOUR-IMAGE-ID" width="250"/>
+    </td>
+  </tr>
+</table>
+
+
+
 
 ---
 # Model-View-ViewModel
