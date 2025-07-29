@@ -1,7 +1,6 @@
 package com.micahnyabuto.coinsphere.ui.screens.market
 
 
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -53,144 +52,143 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.micahnyabuto.coinsphere.R
 import com.micahnyabuto.coinsphere.data.remote.Coin
 import com.micahnyabuto.coinsphere.ui.navigation.Destinations
-import com.micahnyabuto.coinsphere.ui.screens.favourite.FavouritesViewModel
+import kotlinx.coroutines.delay
 
 /**
  * The market screen.
  */
+/**
+ * Main Market Screen that displays cryptocurrency data with pull-to-refresh functionality.
+ *
+ * This screen handles three states: Loading, Success, and Error.
+ * It integrates with the MarketViewModel to fetch and display coin data.
+ */
 @Composable
 fun MarketScreen(
-    modifier: Modifier=Modifier,
-    viewModel: MarketViewModel =hiltViewModel(),
-    navController : NavController
-){
-    val context =LocalContext.current
+    modifier: Modifier = Modifier,
+    viewModel: MarketViewModel = hiltViewModel(),
+    navController: NavController
+) {
+    val context = LocalContext.current
     val marketUiState by viewModel.marketUiState.collectAsState()
     var wasLoading by remember { mutableStateOf(false) }
-
+    val swipeRefreshState = rememberSwipeRefreshState(
+        isRefreshing = marketUiState is MarketUiState.Loading && wasLoading
+    )
     LaunchedEffect(marketUiState) {
-        if (wasLoading && marketUiState is MarketUiState.Success) {
-            Toast.makeText(context, "Refreshed successfully", Toast.LENGTH_SHORT).show()
-        }
-        wasLoading = marketUiState is MarketUiState.Loading
-        if (marketUiState is MarketUiState.Error) {
-            Toast.makeText(context, "Failed to get data", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-   TopAppABar()
-
-    LaunchedEffect(Unit) {
-        viewModel.fetchCoins()
-    }
-    when (marketUiState) {
-        is MarketUiState.Loading -> {
-            MarketShimmerList()
-        }
-        is MarketUiState.Success -> {
-            MarketScreenContent(
-                coins =(marketUiState as MarketUiState.Success).coins,
-                navController = navController,
-            )
-        }
-        is MarketUiState.Error -> {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-            Text("Something went wrong!",
-                style = MaterialTheme.typography.titleLarge.copy()
-                )
-                Spacer(Modifier.height(25.dp))
-                Button(
-                    onClick = {viewModel.fetchCoins()},
-                    modifier = Modifier.padding(8.dp),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text("Refresh again")
-                }
+        when {
+            wasLoading && marketUiState is MarketUiState.Success -> {
+                Toast.makeText(context, "Refreshed successfully", Toast.LENGTH_SHORT).show()
+            }
+            marketUiState is MarketUiState.Error -> {
+                Toast.makeText(context, "Failed to get data", Toast.LENGTH_SHORT).show()
             }
         }
+        wasLoading = marketUiState is MarketUiState.Loading
     }
-
-
-
-}
-
-/**
- * The content of the market screen.
- */
-
-@SuppressLint("SuspiciousIndentation")
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MarketScreenContent(
-    modifier: Modifier= Modifier,
-    coins: List<Coin>,
-    viewModel: MarketViewModel =hiltViewModel(),
-    navController: NavController
-){
-  /**
-   *  Swipe refresh state for the market screen.
-   */
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
-
+    LaunchedEffect(Unit) {
+        delay(1000)
+        viewModel.fetchCoins()
+    }
+    Scaffold(
+        topBar = { TopAppABar() }
+    ) { innerPadding ->
         SwipeRefresh(
             state = swipeRefreshState,
             onRefresh = { viewModel.fetchCoins() },
-
-        ){
-
-            LazyColumn(
-                modifier = Modifier.padding(top =85.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(coins) { coin ->
-                    CoinsRow(
-                        coin=coin
-                    ){
-                        navController.navigate(Destinations.Details.detailsRoute(coin.name))
-                    }
-                    HorizontalDivider()
-
-
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            when (marketUiState) {
+                is MarketUiState.Loading -> {
+                    MarketShimmerList()
+                }
+                is MarketUiState.Success -> {
+                    MarketScreenContent(
+                        coins = (marketUiState as MarketUiState.Success).coins,
+                        navController = navController,
+                    )
+                }
+                is MarketUiState.Error -> {
+                    ErrorStateContent(
+                        onRetry = { viewModel.fetchCoins() }
+                    )
                 }
             }
-
-
-            }
-
-
-
+        }
     }
+}
 
 /**
- * A row for the market screen.
+ * Error state composable showing error message and retry button.
+ * Extracted to a separate function for better readability and reusability.
  */
-@SuppressLint("DefaultLocale")
+@Composable
+private fun ErrorStateContent(onRetry: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            "Something went wrong!",
+            style = MaterialTheme.typography.titleLarge.copy()
+        )
+        Spacer(Modifier.height(25.dp))
+        Button(
+            onClick = onRetry,
+            modifier = Modifier.padding(8.dp),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Text("Try Again")
+        }
+    }
+}
+
+/**
+ * Main content display for successful state.
+ * Shows a LazyColumn list of cryptocurrency items.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MarketScreenContent(
+    modifier: Modifier = Modifier,
+    coins: List<Coin>,
+    navController: NavController
+) {
+    LazyColumn(
+        modifier = Modifier.padding(top = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        items(coins, key = { it.id }) { coin ->
+            CoinsRow(
+                coin = coin,
+                onClick = {
+                    navController.navigate(Destinations.Details.detailsRoute(coin.name))
+                }
+            )
+            HorizontalDivider()
+        }
+    }
+}
+
+/**
+ * Individual cryptocurrency row component.
+ * Displays rank, icon, symbol, price, and price change percentage.
+ */
 @Composable
 fun CoinsRow(
-    modifier: Modifier= Modifier,
+    modifier: Modifier = Modifier,
     coin: Coin,
-    viewModel: FavouritesViewModel =hiltViewModel(),
-    onClick: ()-> Unit
+    onClick: () -> Unit
 ) {
-
     Row(
-        modifier = Modifier.fillMaxSize()
-            .padding(start = 8.dp)
-            .clickable{onClick()}
-
-
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-
         Text(text = "${coin.market_cap_rank}")
-
-
-
         Spacer(modifier = Modifier.width(16.dp))
-
         Image(
             painter = rememberAsyncImagePainter(coin.image),
             contentDescription = coin.name,
@@ -198,38 +196,87 @@ fun CoinsRow(
             contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.width(32.dp))
-        Row {
-            Text(
-                text = "${coin.symbol.uppercase()}", style = MaterialTheme.typography.bodyMedium
-            )
-        }
+
+
+        Text(
+            text = "${coin.symbol.uppercase()}",
+            style = MaterialTheme.typography.bodyMedium
+        )
         Spacer(modifier = Modifier.width(40.dp))
 
-        Row {
-            Text(text = "$${coin.current_price}", style = MaterialTheme.typography.bodyMedium)
-          }
-            Spacer(Modifier.size(40.dp))
-        Row {
-            Text(
-                text = " ${String.format("%.2f", coin.price_change_percentage_24h)}%",
-                style = MaterialTheme.typography.bodyMedium,
-                color = if (coin.price_change_percentage_24h >= 0)
-                    Color.Green else Color.Red
-            )
-        }
-
+        // Current price
+        Text(
+            text = "$${coin.current_price}",
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(Modifier.size(40.dp))
+        Text(
+            text = " ${String.format("%.2f", coin.price_change_percentage_24h)}%",
+            style = MaterialTheme.typography.bodyMedium,
+            color = if (coin.price_change_percentage_24h >= 0) Color.Green else Color.Red
+        )
     }
 }
 
 /**
- *A shimmer row for the market screen.
+ * Custom Top App Bar with logo and profile icon.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopAppABar() {
+    TopAppBar(
+        title = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clip(CircleShape),
+                    painter = painterResource(id = R.drawable.splash),
+                    contentDescription = "app logo",
+                )
+                Text(
+                    "CoinSphere",
+                    modifier = Modifier.padding(start = 8.dp),
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
+        },
+        actions = {
+            // Profile icon
+            Image(
+                modifier = Modifier
+                    .size(32.dp)
+                    .clip(CircleShape),
+                painter = painterResource(id = R.drawable.prof),
+                contentDescription = "Profile",
+                contentScale = ContentScale.Crop
+            )
+        }
+    )
+}
+
+/**
+ * Loading state with shimmer effect for placeholder items.
+ */
+@Composable
+fun MarketShimmerList() {
+    LazyColumn {
+        items(10) {
+            CoinShimmerRow()
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+    }
+}
+
+/**
+ * Individual shimmer row for loading state.
  */
 @Composable
 fun CoinShimmerRow() {
     Row(
         modifier = Modifier
-            .fillMaxWidth(0.9f)
-            .padding(top = 80.dp),
+            .fillMaxWidth()
+            .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -242,12 +289,12 @@ fun CoinShimmerRow() {
                 )
         )
         Spacer(modifier = Modifier.width(16.dp))
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
+
+
+        Column(modifier = Modifier.weight(1f)) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(0.7f)
                     .height(16.dp)
                     .clip(RoundedCornerShape(4.dp))
                     .placeholder(
@@ -256,9 +303,10 @@ fun CoinShimmerRow() {
                     )
             )
             Spacer(modifier = Modifier.height(8.dp))
+
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(0.4f)
                     .height(12.dp)
                     .clip(RoundedCornerShape(4.dp))
                     .placeholder(
@@ -267,62 +315,16 @@ fun CoinShimmerRow() {
                     )
             )
         }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.3f)
+                .height(16.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .placeholder(
+                    visible = true,
+                    highlight = PlaceholderHighlight.shimmer()
+                )
+        )
     }
 }
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopAppABar(){
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Row {
-                        Image(
-                            modifier = Modifier
-                                .size(28.dp)
-                                .clip(CircleShape),
-                            painter = painterResource(id = R.drawable.splash),
-                            contentDescription = "logo",
-                        )
-                        Text(
-                            "CoinSphere",
-                            modifier = Modifier.padding(start = 8.dp),
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                    }
-
-                },
-                actions = {
-                    Image(
-                        modifier= Modifier
-                            .size(32.dp)
-                            .clip(CircleShape)
-                        ,
-                        painter = painterResource(id =R.drawable.prof),
-                        contentDescription = "Profile",
-                        contentScale = ContentScale.Crop
-
-                    )
-
-                },
-
-            )
-        },
-
-        ) { innerpadding ->
-
-    }
-}
-
-
-
-@Composable
-fun MarketShimmerList() {
-    LazyColumn {
-        items(100) { // Show 100 shimmer rows
-            CoinShimmerRow()
-        }
-    }
-}
-
-
