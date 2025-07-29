@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,11 +35,16 @@ import com.micahnyabuto.coinsphere.utils.AppUtil
 @Composable
 fun SignupScreen(
     navController: NavController,
-    authViewModel: AuthViewModel = hiltViewModel()
+    authViewModel: AuthViewModel = hiltViewModel(),
+    onSignUpSuccess: ()-> Unit
+
 ){
     var email by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
 
 
     val context = LocalContext.current
@@ -79,29 +87,30 @@ fun SignupScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Button(onClick = {
-            authViewModel.signUp(email ,name, password){ success ,errorMessage ->
-                if (success){
-                    navController.navigate(Destinations.Market.route){
-                        popUpTo(Destinations.Market.route){inclusive = true}
+        Button(
+            onClick = {
+                isLoading = true
+                authViewModel.signUp(email, name, password) { success, error ->
+                    isLoading = false
+                    if (success) {
+                        onSignUpSuccess()
+                    } else {
+                        errorMessage = error
                     }
-
-                }else{
-                    AppUtil.showToast(context, errorMessage?: "Something went wrong")
-
                 }
-            }
-        },
+            },
+            enabled = !isLoading,
             modifier = Modifier.fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(6.dp),
-
+                .padding(4.dp),
+            shape = RoundedCornerShape(6.dp)
         ) {
-                Text(
-                    text = "Create account",
-                    style = MaterialTheme.typography.titleMedium
-                )
+            if (isLoading) CircularProgressIndicator(modifier = Modifier.size(20.dp))
+            else Text("Sign Up")
+        }
 
+        errorMessage?.let {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = it, color = MaterialTheme.colorScheme.error)
         }
         Spacer(Modifier.height(20.dp))
 
@@ -112,8 +121,8 @@ fun SignupScreen(
         }
         Spacer(Modifier.height(20.dp))
 
-        TextButton(onClick = {navController.navigate(Destinations.Market.route)}) {
-            Text("Skip for now")
+        OutlinedButton(onClick = {navController.navigate(Destinations.Market.route)}) {
+            Text("Continue without account")
         }
 
 
