@@ -2,10 +2,11 @@ package com.micahnyabuto.coinsphere.data.repository
 
 import com.micahnyabuto.coinsphere.data.remote.Coin
 import com.micahnyabuto.coinsphere.data.remote.CoinSphereApiService
+import com.micahnyabuto.coinsphere.domain.repository.CoinSphereRepository
 
 class CoinSphereRepositoryImpl(
     private val coinSphereApiService:CoinSphereApiService
-) : CoinSphereRepository{
+) : CoinSphereRepository {
 
     override suspend fun getCoins(): List<Coin>{
         return coinSphereApiService.getCoins()

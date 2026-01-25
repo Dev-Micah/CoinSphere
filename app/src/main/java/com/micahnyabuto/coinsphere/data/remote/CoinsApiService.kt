@@ -1,5 +1,6 @@
 package com.micahnyabuto.coinsphere.data.remote
 
+import com.micahnyabuto.coinsphere.domain.model.Coin
 import retrofit2.http.GET
 import retrofit2.http.Query
 
