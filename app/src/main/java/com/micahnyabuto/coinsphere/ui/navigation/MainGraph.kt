@@ -33,11 +33,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import com.micahnyabuto.coinsphere.ui.auth.Signin.LoginScreen
-import com.micahnyabuto.coinsphere.ui.auth.Signup.SignupScreen
-import com.micahnyabuto.coinsphere.ui.auth.viewmodel.AuthViewModel
 import com.micahnyabuto.coinsphere.ui.screens.details.CoinDetailsScreen
 import com.micahnyabuto.coinsphere.ui.screens.details.CoinDetailsViewModel
 import com.micahnyabuto.coinsphere.ui.screens.favourite.FavouritesScreen
@@ -51,11 +46,8 @@ import com.micahnyabuto.coinsphere.ui.screens.settings.SettingsScreen
 @Composable
 fun MainGraph(){
     val navController= rememberNavController()
-    val isLoggedIn = Firebase.auth.currentUser != null
-    val firstPage = if (isLoggedIn) Destinations.Market.route else Destinations.SignIn.route
     val favouritesViewModel: FavouritesViewModel = hiltViewModel()
     val marketViewModel: MarketViewModel = hiltViewModel()
-    val authViewModel: AuthViewModel = hiltViewModel()
     val coinDetailsViewModel: CoinDetailsViewModel = hiltViewModel()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -156,19 +148,6 @@ fun MainGraph(){
                         Text("Feature is coming soon")
                     }
                 }
-            }
-            composable(Destinations.SignUp.route) {
-                SignupScreen(
-                    authViewModel = authViewModel,
-                    navController = navController,
-                    onSignUpSuccess = {navController.navigate(Destinations.Market.route)}
-                )
-            }
-            composable(Destinations.SignIn.route) {
-                LoginScreen(
-                    navController = navController,
-                    onLoginSuccess = {navController.navigate(Destinations.SignIn.route)}
-                )
             }
 
             composable(Destinations.News.route) {

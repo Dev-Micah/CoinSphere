@@ -3,8 +3,8 @@ package com.micahnyabuto.coinsphere.ui.screens.market
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.micahnyabuto.coinsphere.data.remote.Coin
-import com.micahnyabuto.coinsphere.data.repository.CoinSphereRepository
+import com.micahnyabuto.coinsphere.domain.model.Coin
+import com.micahnyabuto.coinsphere.domain.repository.CoinsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MarketViewModel@Inject constructor(
-    private val coinSphereRepository: CoinSphereRepository
+    private val coinSphereRepository: CoinsRepository
 ) : ViewModel(){
 
     var marketUiState = MutableStateFlow< MarketUiState>(MarketUiState.Loading)

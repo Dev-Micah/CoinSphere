@@ -1,15 +1,17 @@
 package com.micahnyabuto.coinsphere.data.repository
 
-import com.micahnyabuto.coinsphere.data.remote.Coin
-import com.micahnyabuto.coinsphere.data.remote.CoinSphereApiService
-import com.micahnyabuto.coinsphere.domain.repository.CoinSphereRepository
+import com.micahnyabuto.coinsphere.data.mapper.toDomain
+import com.micahnyabuto.coinsphere.data.remote.CoinsApiService
+import com.micahnyabuto.coinsphere.domain.model.Coin
+import com.micahnyabuto.coinsphere.domain.repository.CoinsRepository
 
-class CoinSphereRepositoryImpl(
-    private val coinSphereApiService:CoinSphereApiService
-) : CoinSphereRepository {
+class CoinsRepositoryImpl(
+    private val coinsApiService:CoinsApiService
+): CoinsRepository {
 
     override suspend fun getCoins(): List<Coin>{
-        return coinSphereApiService.getCoins()
+        val response = coinsApiService.getCoins()
+        return response.map {it.toDomain()}
 
     }
 }

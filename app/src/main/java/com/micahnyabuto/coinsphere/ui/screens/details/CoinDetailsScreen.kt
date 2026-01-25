@@ -17,7 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import com.micahnyabuto.coinsphere.data.remote.Coin
+import com.micahnyabuto.coinsphere.domain.model.Coin
 
 @Composable
 fun CoinDetailsScreen(
@@ -131,13 +131,13 @@ fun CoinDetailsRow(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            CoinDetails("Rank", "${coin.market_cap_rank}")
-            CoinDetails("Price", "$${coin.current_price}")
-            CoinDetails("24h price change", "$${coin.price_change_24h}")
-            CoinDetails("24h High", "$${coin.high_24h}")
-            CoinDetails("24h Low", "$${coin.low_24h}")
-            CoinDetails("Market Cap", "$${coin.market_cap}")
-            CoinDetails("Market cap change 24h", "$${coin.market_cap_change_24h}")
+            CoinDetails("Rank", "${coin.marketCapRank}")
+            CoinDetails("Price", "$${coin.currentPrice}")
+            CoinDetails("24h price change", "$${coin.priceChange24h}")
+            CoinDetails("24h High", "$${coin.high24h}")
+            CoinDetails("24h Low", "$${coin.low24h}")
+            CoinDetails("Market Cap", "$${coin.marketCap}")
+            CoinDetails("Market cap change 24h", "$${coin.marketCapChange24h}")
             CoinDetails("Ath", "$${coin.ath}")
 
         }

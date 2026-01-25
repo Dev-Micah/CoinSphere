@@ -1,8 +1,8 @@
 package com.micahnyabuto.coinsphere.di
 
-import com.micahnyabuto.coinsphere.data.remote.CoinSphereApiService
-import com.micahnyabuto.coinsphere.data.repository.CoinSphereRepository
-import com.micahnyabuto.coinsphere.data.repository.CoinSphereRepositoryImpl
+import com.micahnyabuto.coinsphere.data.remote.CoinsApiService
+import com.micahnyabuto.coinsphere.domain.repository.CoinsRepository
+import com.micahnyabuto.coinsphere.data.repository.CoinsRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,14 +24,14 @@ object NetworkModule {
     }
     @Singleton
     @Provides
-    fun provideCoinSphereApiService(retrofit: Retrofit) : CoinSphereApiService{
-        return retrofit.create(CoinSphereApiService::class.java)
+    fun provideCoinSphereApiService(retrofit: Retrofit) : CoinsApiService{
+        return retrofit.create(CoinsApiService::class.java)
 
     }
     @Singleton
     @Provides
-    fun provideRepository(coinSphereApiService: CoinSphereApiService): CoinSphereRepository {
-        return CoinSphereRepositoryImpl(coinSphereApiService)
+    fun provideRepository(coinSphereApiService: CoinsApiService): CoinsRepository {
+        return CoinsRepositoryImpl(coinSphereApiService)
     }
 
 }

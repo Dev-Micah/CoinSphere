@@ -1,4 +1,4 @@
-package com.micahnyabuto.coinsphere.model
+package com.micahnyabuto.coinsphere.domain.model
 
 data class User(
     val name: String,

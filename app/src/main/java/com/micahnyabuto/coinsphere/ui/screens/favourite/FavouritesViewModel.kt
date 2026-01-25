@@ -1,11 +1,8 @@
 package com.micahnyabuto.coinsphere.ui.screens.favourite
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.micahnyabuto.coinsphere.data.remote.Coin
-import com.micahnyabuto.coinsphere.data.repository.CoinSphereRepository
+import com.micahnyabuto.coinsphere.domain.model.Coin
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,10 +10,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 class FavouritesViewModel@Inject constructor(

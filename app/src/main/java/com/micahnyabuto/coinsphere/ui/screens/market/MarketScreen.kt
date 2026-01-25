@@ -49,19 +49,11 @@ import com.google.accompanist.placeholder.material.shimmer
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.micahnyabuto.coinsphere.R
-import com.micahnyabuto.coinsphere.data.remote.Coin
+import com.micahnyabuto.coinsphere.domain.model.Coin
 import com.micahnyabuto.coinsphere.ui.navigation.Destinations
 import kotlinx.coroutines.delay
 
-/**
- * The market screen.
- */
-/**
- * Main Market Screen that displays cryptocurrency data with pull-to-refresh functionality.
- *
- * This screen handles three states: Loading, Success, and Error.
- * It integrates with the MarketViewModel to fetch and display coin data.
- */
+
 @Composable
 fun MarketScreen(
     modifier: Modifier = Modifier,
@@ -117,10 +109,7 @@ fun MarketScreen(
     }
 }
 
-/**
- * Error state composable showing error message and retry button.
- * Extracted to a separate function for better readability and reusability.
- */
+
 @Composable
 private fun ErrorStateContent(onRetry: () -> Unit) {
     Column(
@@ -143,10 +132,6 @@ private fun ErrorStateContent(onRetry: () -> Unit) {
     }
 }
 
-/**
- * Main content display for successful state.
- * Shows a LazyColumn list of cryptocurrency items.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MarketScreenContent(
@@ -170,10 +155,7 @@ fun MarketScreenContent(
     }
 }
 
-/**
- * Individual cryptocurrency row component.
- * Displays rank, icon, symbol, price, and price change percentage.
- */
+
 @Composable
 fun CoinsRow(
     modifier: Modifier = Modifier,
@@ -186,7 +168,7 @@ fun CoinsRow(
             .padding(start = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "${coin.market_cap_rank}")
+        Text(text = "${coin.marketCapChange24h}")
         Spacer(modifier = Modifier.width(16.dp))
         Image(
             painter = rememberAsyncImagePainter(coin.image),
@@ -205,21 +187,19 @@ fun CoinsRow(
 
         // Current price
         Text(
-            text = "$${coin.current_price}",
+            text = "$${coin.currentPrice}",
             style = MaterialTheme.typography.bodyMedium
         )
         Spacer(Modifier.size(40.dp))
         Text(
-            text = " ${String.format("%.2f", coin.price_change_percentage_24h)}%",
+            text = " ${String.format("%.2f", coin.priceChangePercentage24h)}%",
             style = MaterialTheme.typography.bodyMedium,
-            color = if (coin.price_change_percentage_24h >= 0) Color.Green else Color.Red
+            color = if (coin.priceChangePercentage24h >= 0) Color.Green else Color.Red
         )
     }
 }
 
-/**
- * Custom Top App Bar with logo and profile icon.
- */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppABar() {
@@ -267,9 +247,7 @@ fun MarketShimmerList() {
     }
 }
 
-/**
- * Individual shimmer row for loading state.
- */
+
 @Composable
 fun CoinShimmerRow() {
     Row(

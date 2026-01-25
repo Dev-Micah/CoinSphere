@@ -52,7 +52,6 @@ fun SplashScreen(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.padding(16.dp)
         ) {
-            // App Logo
             Image(
                 painter = painterResource(id = R.drawable.circle_logo),
                 contentDescription = "CoinSphere Logo",
@@ -64,7 +63,6 @@ fun SplashScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // App Name
             Text(
                 text = "CoinSphere",
                 style = MaterialTheme.typography.headlineMedium,
@@ -73,7 +71,7 @@ fun SplashScreen(
             )
 
             Spacer(modifier = Modifier.height(20.dp))
-            // Tagline
+
             Text(
                 text = "Track them all in one platform",
                 style = MaterialTheme.typography.bodyLarge,

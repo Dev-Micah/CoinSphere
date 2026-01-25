@@ -5,18 +5,17 @@ plugins {
     id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.20" // Kotlin serialization
     id("com.google.dagger.hilt.android")
-    alias(libs.plugins.google.gms.google.services)
 
 }
 
 android {
     namespace = "com.micahnyabuto.coinsphere"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.micahnyabuto.coinsphere"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -54,8 +53,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -111,6 +108,15 @@ dependencies {
     //Datastore
     implementation ("androidx.datastore:datastore-preferences:1.1.6")
 
+    //Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+
+    //Ktor
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
 
 
 
