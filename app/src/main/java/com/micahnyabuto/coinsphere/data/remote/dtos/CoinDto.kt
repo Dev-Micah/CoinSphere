@@ -11,29 +11,29 @@ data class CoinDto(
     val image: String,
 
     @SerialName("current_price")
-    val currentPrice: Double,
+    val currentPrice: Double?,
 
     @SerialName("market_cap")
-    val marketCap: Long,
+    val marketCap: Long?,
 
     @SerialName("market_cap_rank")
-    val marketCapRank: Int,
+    val marketCapRank: Int?,
 
     @SerialName("market_cap_change_24h")
-    val marketCapChange24h: Double,
+    val marketCapChange24h: Double?,
 
     @SerialName("price_change_24h")
-    val priceChange24h: Double,
+    val priceChange24h: Double?,
 
     @SerialName("price_change_percentage_24h")
-    val priceChangePercentage24h: Double,
+    val priceChangePercentage24h: Double?,
 
     @SerialName("high_24h")
-    val high24h: Double,
+    val high24h: Double?,
 
     @SerialName("low_24h")
-    val low24h: Double,
+    val low24h: Double?,
 
     @SerialName("ath")
-    val ath: Double
+    val ath: Double?
 )

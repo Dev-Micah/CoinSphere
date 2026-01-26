@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.20" // Kotlin serialization
-    id("com.google.dagger.hilt.android")
 
 }
 
@@ -79,12 +78,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
 
 
-    //Hilt
-    ksp(libs.hilt.compiler)
-    ksp(libs.androidx.hilt.compiler.v100)
-    implementation(libs.hilt.android.v248)
-    implementation(libs.androidx.hilt.navigation.compose.v110alpha01)
-
     //Retrofit
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
 
@@ -117,8 +110,7 @@ dependencies {
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
-
-
+    implementation("io.ktor:ktor-client-logging:3.4.0")
 
 
 }

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.micahnyabuto.coinsphere.domain.model.Coin
 import com.micahnyabuto.coinsphere.domain.repository.CoinsRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,10 +18,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okio.IOException
-import javax.inject.Inject
 
-@HiltViewModel
-class MarketViewModel@Inject constructor(
+class MarketViewModel(
     private val coinSphereRepository: CoinsRepository
 ) : ViewModel(){
 

@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -42,13 +41,14 @@ import com.micahnyabuto.coinsphere.ui.screens.market.MarketViewModel
 import com.micahnyabuto.coinsphere.ui.screens.news.NewsScreen
 import com.micahnyabuto.coinsphere.ui.screens.search.SearchScreen
 import com.micahnyabuto.coinsphere.ui.screens.settings.SettingsScreen
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainGraph(){
     val navController= rememberNavController()
-    val favouritesViewModel: FavouritesViewModel = hiltViewModel()
-    val marketViewModel: MarketViewModel = hiltViewModel()
-    val coinDetailsViewModel: CoinDetailsViewModel = hiltViewModel()
+    val favouritesViewModel: FavouritesViewModel = koinViewModel()
+    val marketViewModel: MarketViewModel = koinViewModel()
+    val coinDetailsViewModel: CoinDetailsViewModel = koinViewModel()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route.orEmpty()

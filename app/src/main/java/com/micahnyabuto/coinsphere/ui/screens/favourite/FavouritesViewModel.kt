@@ -3,8 +3,6 @@ package com.micahnyabuto.coinsphere.ui.screens.favourite
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.micahnyabuto.coinsphere.domain.model.Coin
-import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,10 +11,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
-@HiltViewModel
-class FavouritesViewModel@Inject constructor(
-
-) :ViewModel(){
+class FavouritesViewModel() :ViewModel(){
 
     private  val _favouriteIds = MutableStateFlow<Set<String>>(emptySet())
     val favouriteIds: StateFlow<Set<String>> =_favouriteIds.asStateFlow()

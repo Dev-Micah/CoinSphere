@@ -3,6 +3,7 @@ package com.micahnyabuto.coinsphere.ui.screens.market
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,7 +41,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.placeholder.PlaceholderHighlight
@@ -52,12 +52,14 @@ import com.micahnyabuto.coinsphere.R
 import com.micahnyabuto.coinsphere.domain.model.Coin
 import com.micahnyabuto.coinsphere.ui.navigation.Destinations
 import kotlinx.coroutines.delay
+import org.koin.androidx.compose.koinViewModel
+import kotlin.math.abs
 
 
 @Composable
 fun MarketScreen(
     modifier: Modifier = Modifier,
-    viewModel: MarketViewModel = hiltViewModel(),
+    viewModel: MarketViewModel = koinViewModel(),
     navController: NavController
 ) {
     val context = LocalContext.current
@@ -163,40 +165,66 @@ fun CoinsRow(
     onClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "${coin.marketCapChange24h}")
-        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+            text = coin.marketCapRank.toString(),
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        Spacer(Modifier.width(16.dp))
         Image(
             painter = rememberAsyncImagePainter(coin.image),
             contentDescription = coin.name,
-            modifier = Modifier.size(35.dp),
-            contentScale = ContentScale.Crop
+            modifier = Modifier
+                .size(32.dp)
+                .clip(CircleShape)
         )
-        Spacer(modifier = Modifier.width(32.dp))
+        Spacer(Modifier.width(16.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = coin.symbol.uppercase(),
+                style = MaterialTheme.typography.titleSmall
+            )
+            Text(
+                text = formatMarketCap(coin.marketCap),
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
 
-
-        Text(
-            text = "${coin.symbol.uppercase()}",
-            style = MaterialTheme.typography.bodyMedium
-        )
-        Spacer(modifier = Modifier.width(40.dp))
-
-        // Current price
-        Text(
-            text = "$${coin.currentPrice}",
-            style = MaterialTheme.typography.bodyMedium
-        )
-        Spacer(Modifier.size(40.dp))
-        Text(
-            text = " ${String.format("%.2f", coin.priceChangePercentage24h)}%",
-            style = MaterialTheme.typography.bodyMedium,
-            color = if (coin.priceChangePercentage24h >= 0) Color.Green else Color.Red
-        )
+        Column(horizontalAlignment = Alignment.End) {
+            Text(
+                text = "$${coin.currentPrice}",
+                style = MaterialTheme.typography.titleSmall,
+            )
+            val isPositive = coin.priceChangePercentage24h >= 0
+            Row {
+                Text(
+                    text = if (isPositive) "▲ " else "▼ ",
+                    color = if (isPositive) Color.Green else Color.Red,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = "${String.format("%.2f", abs(coin.priceChangePercentage24h))}%",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = if (isPositive) Color.Green else Color.Red
+                )
+            }
+        }
     }
+}
+
+private fun formatMarketCap(marketCap: Long): String {
+    val value = when {
+        marketCap >= 1_000_000_000_000 -> Pair(marketCap / 1_000_000_000_000.0, "T")
+        marketCap >= 1_000_000_000 -> Pair(marketCap / 1_000_000_000.0, "B")
+        marketCap >= 1_000_000 -> Pair(marketCap / 1_000_000.0, "M")
+        else -> return "$${marketCap}"
+    }
+    return "$${String.format("%.2f", value.first)}${value.second}"
 }
 
 

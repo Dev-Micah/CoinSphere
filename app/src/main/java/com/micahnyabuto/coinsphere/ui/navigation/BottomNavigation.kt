@@ -31,13 +31,12 @@ enum class BottomNavigation(
 //        route = Destinations.News
 //    ),
 
-//    Favourite(
-//        label ="Favourites",
-//        selectedIcon = Icons.Default.Star,
-//        unselectedIcon = Icons.Default.Star,
-//        route = Destinations.Favourite
-//
-//    ),
+    Favourite(
+        label ="Favourites",
+        selectedIcon = Icons.Default.Star,
+        unselectedIcon = Icons.Default.Star,
+        route = Destinations.Favourite.route
+    ),
 
     Search(
         label ="Search",

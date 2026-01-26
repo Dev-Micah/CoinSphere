@@ -1,11 +1,7 @@
 [versions]
 accompanistPlaceholderMaterial = "0.36.0"
 agp = "8.9.3"
-androidxHiltCompiler = "1.3.0"
-hiltAndroidCompiler = "2.59"
-hiltAndroidVersion = "2.59"
-hiltNavigationCompose = "1.3.0"
-hiltNavigationComposeVersion = "1.3.0"
+
 kotlin = "2.3.0"
 ksp = "2.1.20-2.0.0"
 coreKtx = "1.17.0"
@@ -19,8 +15,6 @@ compose-navigation = "2.9.6"
 kotlinx-serialization-json = "2.1.20"
 appcompat = "1.7.1"
 room = "2.8.4"
-hiltAndroid = "2.59"
-hiltCompiler = "1.3.0"
 koin = "4.1.1"
 koin-compose = "4.1.1"
 ktor = "3.4.0"
@@ -29,12 +23,6 @@ ktor = "3.4.0"
 [libraries]
 accompanist-placeholder-material = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanistPlaceholderMaterial" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-hilt-compiler-v100 = { module = "androidx.hilt:hilt-compiler", version.ref = "androidxHiltCompiler" }
-androidx-hilt-navigation-compose-v110 = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
-androidx-hilt-navigation-compose-v110alpha01 = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
-hilt-android-compiler-v255 = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
-hilt-android-v248 = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidVersion" }
-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroidCompiler" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -60,11 +48,6 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 
-#Hilt
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
-androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltCompiler" }
-androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltCompiler" }
 
 #koin
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
@@ -82,6 +65,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-

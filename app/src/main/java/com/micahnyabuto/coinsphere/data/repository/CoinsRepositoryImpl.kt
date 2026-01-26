@@ -6,7 +6,7 @@ import com.micahnyabuto.coinsphere.domain.model.Coin
 import com.micahnyabuto.coinsphere.domain.repository.CoinsRepository
 
 class CoinsRepositoryImpl(
-    private val coinsApiService:CoinsApiService
+    private val coinsApiService: CoinsApiService
 ): CoinsRepository {
 
     override suspend fun getCoins(): List<Coin>{

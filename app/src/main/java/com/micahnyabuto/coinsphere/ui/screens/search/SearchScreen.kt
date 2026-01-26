@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,23 +21,22 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.DialogNavigator
 import com.micahnyabuto.coinsphere.ui.navigation.Destinations
 import com.micahnyabuto.coinsphere.ui.screens.market.CoinsRow
-import com.micahnyabuto.coinsphere.ui.screens.market.MarketShimmerList
 import com.micahnyabuto.coinsphere.ui.screens.market.MarketUiState
 import com.micahnyabuto.coinsphere.ui.screens.market.MarketViewModel
-
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun SearchScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    viewModel: MarketViewModel = hiltViewModel()
+    viewModel: MarketViewModel = koinViewModel()
 ) {
     val searchQuery by viewModel.searchQuery.collectAsState()
     val filteredCoins by viewModel.filteredCoins.collectAsState()
@@ -56,7 +55,11 @@ fun SearchScreen(
                 modifier = Modifier.fillMaxWidth()
                     .padding(16.dp)
                     .height(50.dp),
-                shape = RoundedCornerShape(6.dp)
+                shape = RoundedCornerShape(12.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                )
 
             )
 
@@ -108,4 +111,10 @@ fun SearchScreen(
         }
     }
 
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SearchScreenPreview() {
+    SearchScreen(navController = NavController(LocalContext.current))
 }

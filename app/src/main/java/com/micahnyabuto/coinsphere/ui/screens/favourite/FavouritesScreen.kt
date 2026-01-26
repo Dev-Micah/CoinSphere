@@ -11,22 +11,21 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.micahnyabuto.coinsphere.ui.screens.market.CoinsRow
-import com.micahnyabuto.coinsphere.ui.screens.market.MarketViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.micahnyabuto.coinsphere.ui.navigation.Destinations
+import com.micahnyabuto.coinsphere.ui.screens.market.CoinsRow
+import com.micahnyabuto.coinsphere.ui.screens.market.MarketViewModel
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun FavouritesScreen(
-    favouritesViewModel: FavouritesViewModel = hiltViewModel(),
-    marketViewModel: MarketViewModel = hiltViewModel(),
+    favouritesViewModel: FavouritesViewModel = koinViewModel(),
+    marketViewModel: MarketViewModel = koinViewModel(),
     navController : NavController
 ) {
 
@@ -43,7 +42,7 @@ fun FavouritesScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavouritesScreenContent(
-    favouritesViewModel: FavouritesViewModel =hiltViewModel()
+    favouritesViewModel: FavouritesViewModel =koinViewModel()
 ){
     val navController = rememberNavController()
     val favouriteCoins by favouritesViewModel.favouriteCoins.collectAsState()

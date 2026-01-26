@@ -5,18 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.micahnyabuto.coinsphere.domain.model.Coin
 import com.micahnyabuto.coinsphere.domain.repository.CoinsRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-@HiltViewModel
-class CoinDetailsViewModel@Inject constructor(
-    private val coinSphereRepository: CoinsRepository
-): ViewModel() {
+class CoinDetailsViewModel(private val coinSphereRepository: CoinsRepository): ViewModel() {
 
     var coinUiState = MutableStateFlow<CoinUiState>(CoinUiState.Loading)
         private set
